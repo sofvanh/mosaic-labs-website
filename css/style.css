@@ -1,0 +1,219 @@
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('../fonts/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'Inter';
+  --text-primary: #b65d3d;
+  /* soft terracotta, still clearly orange-ish */
+  --text-secondary: #d17f61;
+  /* lighter but still colorful */
+  --text-dark: #943f22;
+  /* deeper terracotta */
+  --link: #e6754c;
+  /* clear pop of orange */
+  --link-hover: #ff8659;
+  /* brighter on hover */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fff1ec;
+  /* very light warm peach */
+  --hr-color: #ffd4c6;
+  /* light peachy divider */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+body {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+  animation: fadeIn 2s ease;
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: 'Bricolage Grotesque';
+  color: var(--text-secondary);
+}
+
+h2 {
+  font-family: 'Bricolage Grotesque';
+  color: var(--text-dark);
+  font-weight: bold;
+}
+
+p {
+  font-weight: 300;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+nav {
+  width: 100vw;
+  height: 5rem;
+  position: fixed;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  background-color: var(--bg-secondary);
+}
+
+nav a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  transition: color 0.3s ease;
+}
+
+li {
+  margin: 0.5rem;
+}
+
+hr {
+  border: 0 none;
+  margin: 2rem 0rem;
+  border-top: 1px dashed var(--hr-color);
+  height: 1px;
+  background-color: transparent;
+}
+
+.content {
+  padding-top: 5rem;
+}
+
+.container {
+  margin: 8px 0px;
+  padding: 2px 0px;
+  border-radius: 8px;
+}
+
+.container h3,
+.container p {
+  margin: 0.3rem 0rem;
+}
+
+.container sub {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+a img {
+  filter: brightness(0) saturate(100%) invert(63%) sepia(11%) saturate(1035%) hue-rotate(295deg) brightness(92%) contrast(87%);
+  transition: filter 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+a img:hover {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(11%) saturate(1116%) hue-rotate(295deg) brightness(93%) contrast(89%);
+}
+
+
+.margin-16px {
+  margin: 16px;
+}
+
+.padding-8px {
+  padding: 8px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  place-items: center;
+}
+
+.flex-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.max-width-700 {
+  max-width: 700px;
+}
+
+.filler {
+  flex: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-dark);
+}
+
+.team-member {
+  max-width: 200px;
+  margin: 16px;
+}
+
+.team-member img {
+  border-radius: 100%;
+  width: 100%;
+  height: auto;
+}
+
+.team-member p {
+  margin-bottom: 4px;
+}

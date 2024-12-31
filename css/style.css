@@ -25,7 +25,7 @@
 :root {
   font-family: 'Inter';
   --text-primary: #2a2d21;
-  --text-secondary: #3f4332;
+  --text-secondary: #778a3d;
   --text-dark: #4f5c3f;
   --link: #8B9D6A;
   --link-hover: #A5BF54;
@@ -53,7 +53,7 @@ body {
 }
 
 h1 {
-  font-size: 6.02rem;
+  font-size: 4rem;
   font-family: 'ET Book Roman Old Style';
   font-weight: 500;
   color: #a5bf54;
@@ -73,6 +73,8 @@ p {
 }
 
 a {
+  font-size: 1.1rem;
+  font-family: 'ET Book Roman Old Style';
   color: var(--link);
   transition: color 0.3s ease;
 }
@@ -126,12 +128,6 @@ hr {
 .container h3,
 .container p {
   margin: 0.3rem 0rem;
-}
-
-.container sub {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--text-secondary);
 }
 
 footer {
@@ -201,6 +197,7 @@ a img:hover {
 .hero {
   width: 100%;
   padding: 200px 24px 4px 24px;
+  margin-bottom: 64px;
   box-sizing: border-box;
   background-image: linear-gradient(rgba(255, 255, 255, 0.8),
       rgba(255, 255, 255, 1)), url('../images/hero.png');
@@ -214,8 +211,9 @@ a img:hover {
 }
 
 .subtitle {
-  font-size: 0.8rem;
-  color: var(--text-dark);
+  font-family: 'ET Book Roman Old Style';
+  font-size: 1.6rem;
+  color: var(--text-secondary);
 }
 
 .team-member {

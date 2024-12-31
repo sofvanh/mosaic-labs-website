@@ -16,21 +16,14 @@
 
 :root {
   font-family: 'Inter';
-  --text-primary: #b65d3d;
-  /* soft terracotta, still clearly orange-ish */
-  --text-secondary: #d17f61;
-  /* lighter but still colorful */
-  --text-dark: #943f22;
-  /* deeper terracotta */
-  --link: #e6754c;
-  /* clear pop of orange */
-  --link-hover: #ff8659;
-  /* brighter on hover */
+  --text-primary: #2a2d21;
+  --text-secondary: #3f4332;
+  --text-dark: #4f5c3f;
+  --link: #8B9D6A;
+  --link-hover: #A5BF54;
   --bg-primary: #ffffff;
-  --bg-secondary: #fff1ec;
-  /* very light warm peach */
-  --hr-color: #ffd4c6;
-  /* light peachy divider */
+  --bg-secondary: #F5F7F0;
+  --hr-color: #E8EFD9;
 }
 
 @keyframes fadeIn {
@@ -54,7 +47,8 @@ body {
 h1 {
   font-size: 6.02rem;
   font-family: 'Bricolage Grotesque';
-  color: var(--text-dark);
+  font-weight: 500;
+  color: #a5bf54;
 }
 
 h2 {
@@ -64,7 +58,10 @@ h2 {
 }
 
 p {
-  font-weight: 300;
+  /* font-weight: 300; */
+  letter-spacing: 0.01rem;
+  line-height: 1.5rem;
+  font-size: 0.9rem;
 }
 
 a {
@@ -196,7 +193,8 @@ a img:hover {
 .hero {
   width: 100%;
   padding: 200px 24px 4px 24px;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.3),
+  box-sizing: border-box;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8),
       rgba(255, 255, 255, 1)), url('../images/hero.png');
   background-size: cover;
   background-position: center;
@@ -239,6 +237,10 @@ details {
   border-top: 1px solid var(--hr-color);
   padding: 16px 0;
   overflow: hidden;
+}
+
+.details-content {
+  padding: 16px 0;
 }
 
 summary {

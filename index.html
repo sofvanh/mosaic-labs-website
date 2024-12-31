@@ -25,12 +25,13 @@
 <!-- Add Google tag (gtag.js) -->
 
 <body class="grid">
-    <div class="margin-16px max-width-700">
+    <div class="hero">
         <div class="text-center">
             <h1 class="title">Mosaic Labs</h1>
             <div class="subtitle">Building interfaces for collective intelligence and AI-mediated deliberation</div>
         </div>
-        <hr>
+    </div>
+    <div class="margin-16px max-width-700">
         <div>
             <h2>About</h2>
             <p>
@@ -55,29 +56,114 @@
                 deeply human-centered.
             </p>
         </div>
-        <hr>
+        <div class="sections" id="accordion">
+            <details>
+                <summary>Differential Development</summary>
+                <div class="details-content">
+                    <p>
+                        When atomic energy was developed, people gained the power both to produce green energy and to
+                        destroy entire cities. They did not gain the wisdom to use that power responsibly, nor the
+                        ability
+                        to ensure their power was used cooperatively for the good of all.
+                    </p>
+                    <p>
+                        To safely navigate the risk of advanced AI, we need technology which enables coordination,
+                        empowers
+                        human groups to think clearly, and prevents disastrous conflicts. The order in which technology
+                        is
+                        developed matters. We aim to accelerate work which uses recent advances in AI capabilities to
+                        enable
+                        better collective reasoning and coordination, and gives people the ability to navigate an
+                        uncertain
+                        future.
+                    </p>
+                </div>
+            </details>
+            <details>
+                <summary>Cooperative Architectures</summary>
+                <div class="details-content">
+                    <p>
+                        Our mission is to improve human reasoning at the group level, focusing on the ways in which
+                        people
+                        communicate information and resolve disagreements. In particular, we are prototyping the use of
+                        AI
+                        to mediate group deliberation. This means both using AI to intervene on the dynamics of a
+                        discussion, as well as being an interface for people to better understand the content of what is
+                        being discussed. We are pioneering new architectures for group dialogue and reasoning, finding
+                        ways
+                        to integrate the unique abilities of AI systems while keeping humans and human reasoning at the
+                        center.
+                    </p>
+                </div>
+            </details>
+            <details>
+                <summary>Code as a Catalyst</summary>
+                <div class="details-content">
+                    <p>
+                        We are building experimental interfaces which test new strategies for AI mediate collective
+                        deliberation. By testing and demonstrating new methods, we aim to help grow a movement directed
+                        toward improved human reasoning, large scale collaboration, and coordinated action.
+                    </p>
+                    <p>
+                        Software can often serve as a nucleation site for dialogue, and become a part of the ontology we
+                        use
+                        to think about the future (e.g. federated social networks, Polis/Community Notes, or Loom). Our
+                        philosophy is to advance the discussion about AI development by building software which embodies
+                        our
+                        vision for the future.
+                    </p>
+                </div>
+            </details>
+            <details>
+                <summary>Scaling to Superhuman AI</summary>
+                <div class="details-content">
+                    <p>
+                        AI systems are improving rapidly. For this reason, it’s important that work to augment human
+                        reasoning improves alongside AI capability advancements, and is not made obsolete by them.
+                        Furthermore, better human reasoning and decision making is critical to navigating the transition
+                        to
+                        superhuman AI safely, and making the right choices about how to engineer the future we want.
+                    </p>
+                </div>
+            </details>
+        </div>
         <div>
             <h2>Team</h2>
             <div class="flex-horizontal wrap">
-                <div class="team-member">
+                <div class="team-member text-center">
                     <img src="images/niki.jpeg" alt="Nicholas Dupuis" class="team-member-image">
-                    <p class="text-center">Nicholas Dupuis</p>
-                    <div class="text-center" style="font-size: 0.8rem; color: var(--text-secondary);">Head of
-                        Research</div>
+                    <a style="display: block; margin: 8px; color: var(--text-dark);"
+                        href="https://www.lesswrong.com/users/nicholaskees">Nicholas Dupuis</a>
+                    <div class="text-center" style="font-size: 0.8rem; color: var(--text-secondary);">Research Lead
+                    </div>
                 </div>
-                <div class="team-member">
+                <div class="team-member text-center">
                     <img src="images/sofi.jpeg" alt="Sofia Vanhanen" class="team-member-image">
-                    <p class="text-center">Sofia Vanhanen</p>
-                    <div class="text-center" style="font-size: 0.8rem; color: var(--text-secondary);">Head of
-                        Technology</div>
+                    <a style="display: block; margin: 8px; color: var(--text-dark);"
+                        href="https://sofiavanhanen.fi">Sofia Vanhanen</a>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Technology Lead
+                    </div>
                 </div>
             </div>
         </div>
         <hr>
         <footer>
             <p class="nowrap">&copy; 2024 Mosaic Labs</p>
+            <a href="mailto:hello@mosaic-labs.org" style="margin-left: auto;">Get in touch</a>
         </footer>
     </div>
 </body>
+
+<script>
+    document.querySelectorAll('#accordion details').forEach(detail => {
+        detail.addEventListener('toggle', (e) => {
+            if (detail.open) {
+                document.querySelectorAll('#accordion details').forEach(d => {
+                    if (d !== detail) d.open = false;
+                });
+            }
+        });
+    });
+</script>
 
 </html>

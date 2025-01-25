@@ -1,37 +1,14 @@
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  src: url('../fonts/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('../fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ET Book Roman Old Style';
-  src: url('../fonts/et-book.woff') format('woff');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
-  font-family: 'Inter';
-  --text-primary: #2a2d21;
-  --text-secondary: #778a3d;
-  --text-dark: #4f5c3f;
-  --link: #8B9D6A;
-  --link-hover: #A5BF54;
+  font-family: 'Lora', serif;
+  --text-primary: #1e221a;
+  --text-secondary: #444f3c;
+  --link: #6f7d55;
+  --link-hover: #a2b77a;
   --bg-primary: #ffffff;
   --bg-secondary: #F5F7F0;
-  --hr-color: #E8EFD9;
+  --hr-color: #d0d5c5;
+  --max-width: 700px;
+  --spacing-unit: 1rem;
 }
 
 @keyframes fadeIn {
@@ -53,34 +30,38 @@ body {
 }
 
 h1 {
-  font-size: 4rem;
-  font-family: 'ET Book Roman Old Style';
-  font-weight: 500;
-  color: #a5bf54;
+  font-size: 3.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-unit);
 }
 
 h2 {
-  font-family: 'ET Book Roman Old Style';
-  color: var(--text-dark);
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: calc(var(--spacing-unit) * 2) 0 var(--spacing-unit);
 }
 
 p {
-  /* font-weight: 300; */
-  letter-spacing: 0.01rem;
-  line-height: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  margin-bottom: 1.2em;
 }
 
 a {
-  font-size: 1.1rem;
-  font-family: 'ET Book Roman Old Style';
+  font-size: inherit;
   color: var(--link);
-  transition: color 0.3s ease;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 0.3s ease, text-decoration-thickness 0.3s ease;
 }
 
 a:hover {
   color: var(--link-hover);
+  text-decoration-thickness: 2px;
 }
 
 nav {
@@ -110,7 +91,7 @@ li {
 hr {
   border: 0 none;
   margin: 2rem 0rem;
-  border-top: 1px dashed var(--hr-color);
+  border-top: 1px solid var(--hr-color);
   height: 1px;
   background-color: transparent;
 }
@@ -135,8 +116,10 @@ footer {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
+  padding: calc(var(--spacing-unit) * 2) 0;
+  font-size: 0.9rem;
 }
 
 a img {
@@ -183,7 +166,8 @@ a img:hover {
 }
 
 .max-width-700 {
-  max-width: 700px;
+  max-width: var(--max-width);
+  padding: 0 var(--spacing-unit);
 }
 
 .filler {
@@ -196,10 +180,10 @@ a img:hover {
 
 .hero {
   width: 100%;
-  padding: 200px 24px 4px 24px;
-  margin-bottom: 64px;
+  padding: calc(var(--spacing-unit) * 8) var(--spacing-unit) calc(var(--spacing-unit) * 2);
+  margin-bottom: calc(var(--spacing-unit) * 4);
   box-sizing: border-box;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.8),
+  background-image: linear-gradient(rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 1)), url('../images/hero.png');
   background-size: cover;
   background-position: center;
@@ -207,13 +191,16 @@ a img:hover {
 }
 
 .title {
-  margin-bottom: 1rem;
+  margin-bottom: calc(var(--spacing-unit) * 1.5);
 }
 
 .subtitle {
-  font-family: 'ET Book Roman Old Style';
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.4;
   color: var(--text-secondary);
+  max-width: calc(var(--max-width) * 0.8);
+  margin: 0 auto;
 }
 
 .team-member {
@@ -236,29 +223,28 @@ a img:hover {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--hr-color);
-  margin: 64px 0px;
+  margin: calc(var(--spacing-unit) * 4) 0;
 }
 
 details {
   border-top: 1px solid var(--hr-color);
-  padding: 16px 0;
+  padding: calc(var(--spacing-unit) * 1.5) 0;
   overflow: hidden;
 }
 
 .details-content {
-  padding: 16px 0;
+  padding: calc(var(--spacing-unit) * 1.5) 0;
 }
 
 summary {
-  font-family: 'ET Book Roman Old Style';
-  color: var(--text-dark);
-  font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 1.3;
   cursor: pointer;
   list-style: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: calc(var(--spacing-unit) * 0.5) 0;
 }
 
 summary::-webkit-details-marker {

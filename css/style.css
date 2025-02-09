@@ -2,6 +2,7 @@
   font-family: 'Lora', serif;
   --text-primary: #1e221a;
   --text-secondary: #444f3c;
+  --text-light: #88947d;
   --link: #6f7d55;
   --link-hover: #a2b77a;
   --bg-primary: #ffffff;
@@ -171,6 +172,12 @@ a img:hover {
   justify-content: center;
 }
 
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .wrap {
   flex-wrap: wrap;
 }
@@ -218,12 +225,14 @@ a img:hover {
 }
 
 .team-member {
-  max-width: 200px;
+  max-width: 250px;
+  width: 100%;
   margin: 16px;
 }
 
 .team-member img {
   border-radius: 100%;
+  max-width: 80px;
   width: 100%;
   height: auto;
 }

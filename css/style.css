@@ -30,30 +30,41 @@ body {
   animation: fadeIn 2s ease;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a {
+  font-weight: 700;
+}
+
 h1 {
   font-size: 3.5rem;
-  font-weight: 600;
   line-height: 1.2;
   margin-bottom: var(--spacing-unit);
 }
 
 h2 {
   font-size: 2rem;
-  font-weight: 600;
   line-height: 1.3;
   margin: calc(var(--spacing-unit) * 2) 0 var(--spacing-unit);
 }
 
 h3 {
   font-size: 1.5rem;
-  font-weight: 600;
   line-height: 1.3;
   margin: calc(var(--spacing-unit) * 2) 0 var(--spacing-unit);
 }
 
 h4 {
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 600 !important;
   line-height: 1.3;
   margin: calc(var(--spacing-unit) * 2) 0 var(--spacing-unit);
 }
@@ -68,6 +79,7 @@ p {
 
 a {
   font-size: inherit;
+  font-weight: 500;
   color: var(--link);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
@@ -130,11 +142,12 @@ footer {
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-  text-align: center;
+  gap: 64px;
   padding: calc(var(--spacing-unit) * 2) 0;
   font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
 }
 
 a img {
@@ -340,4 +353,26 @@ input {
   margin-top: 8px;
   color: var(--text-light);
   font-size: 0.8rem;
+}
+
+.footer-links {
+  text-align: right;
+}
+
+.footer-links h4 {
+  color: var(--text-secondary);
+  margin: 0 0 16px 0;
+  font-size: inherit;
+  font-weight: 500;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links ul li {
+  margin: 0;
+  padding: 4px 0;
 }

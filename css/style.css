@@ -286,3 +286,58 @@ summary::after {
 details[open] summary::after {
   transform: rotate(-180deg);
 }
+
+input {
+  font-family: inherit;
+}
+
+/* Email subscription form styles */
+.signup-container {
+  padding: 20px;
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  margin: 30px auto;
+}
+
+.signup-container h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.form-group {
+  display: flex;
+  gap: 8px;
+}
+
+.signup-container input[type="email"] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--hr-color);
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: var(--bg-primary);
+}
+
+.submit-btn {
+  background-color: var(--link);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--link-hover);
+}
+
+.privacy-notice {
+  display: block;
+  margin-top: 8px;
+  color: var(--text-light);
+  font-size: 0.8rem;
+}

@@ -195,9 +195,21 @@
             </div>
         </div>
         <hr>
+        <div class="signup-container">
+            <h3>Stay Updated</h3>
+            <form action="https://buttondown.email/api/emails/embed-subscribe/mosaic-labs" method="post"
+                target="popupwindow" onsubmit="window.open('https://buttondown.email/mosaic-labs', 'popupwindow')">
+                <div class="form-group">
+                    <input type="email" name="email" id="bd-email" placeholder="your@email.com" required>
+                    <input type="submit" value="Subscribe" class="submit-btn">
+                </div>
+                <small class="privacy-notice">We'll only send occasional updates about our projects.</small>
+            </form>
+        </div>
+        <hr>
         <footer>
             <p class="nowrap">&copy;
-                <script>document.write('2024-' + new Date().getFullYear())</script> Mosaic Labs
+                <script>document.write(new Date().getFullYear())</script> Mosaic Labs
             </p>
             <a href="mailto:hello@mosaic-labs.org" style="margin-left: auto; font-size: 1.1rem;">Get in touch</a>
         </footer>

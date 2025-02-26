@@ -353,6 +353,7 @@ input {
   margin-top: 8px;
   color: var(--text-light);
   font-size: 0.8rem;
+  line-height: 1.6;
 }
 
 .footer-links {

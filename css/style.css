@@ -322,6 +322,7 @@ input {
 .form-group {
   display: flex;
   gap: 8px;
+  width: 100%;
 }
 
 .signup-container input[type="email"] {
@@ -330,7 +331,6 @@ input {
   border: 1px solid var(--hr-color);
   border-radius: 4px;
   font-size: 16px;
-  background-color: var(--bg-primary);
 }
 
 .submit-btn {
@@ -399,5 +399,14 @@ input {
 
   .footer-links ul li {
     margin: 0;
+  }
+
+  .form-group {
+    flex-direction: column;
+  }
+
+  .signup-container input[type="email"],
+  .submit-btn {
+    width: 100%;
   }
 }

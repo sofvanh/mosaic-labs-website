@@ -13,7 +13,7 @@ class FooterComponent extends HTMLElement {
                 <ul>
                     <li><a href="https://nexus-tool.com">Nexus</a></li>
                     <li><a href="https://pantheon.chat">Pantheon</a></li>
-                    <!-- <li><a href="/blog/index.html">Blog</a></li> -->
+                    <li><a href="/blog/index.html">Blog</a></li>
                     <li><a href="https://github.com/sofvanh">GitHub</a></li>
                 </ul>
             </div>

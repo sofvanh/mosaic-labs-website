@@ -22,6 +22,10 @@ const template = (content, metadata) => `
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.mosaic-labs.org/blog/${metadata.slug}">
   <meta property="og:title" content="${metadata.title} | Mosaic Labs">
@@ -59,6 +63,16 @@ const template = (content, metadata) => `
     <hr>
     <footer-component></footer-component>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$", right: "$", display: false},
+          {left: "$$", right: "$$", display: true}
+        ]
+      });
+    });
+  </script>
 </body>
 </html>
 `;

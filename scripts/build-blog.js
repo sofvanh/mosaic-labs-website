@@ -1,9 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
-
-// We need to install a package to parse frontmatter
-// Run: npm install gray-matter
 const matter = require('gray-matter');
 
 const postsDir = path.join(__dirname, '../posts');

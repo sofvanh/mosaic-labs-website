@@ -1,6 +1,7 @@
 ---
 title: "Habermas Machine"
 date: "2025-03-12"
+author: "Nicholas Kees Dupuis"
 description: "DeepMind's attempt to build an AI mediator that helps groups converge on shared beliefs"
 ---
 This post is a distillation of a recent work in AI-assisted human coordination from Google DeepMind.  

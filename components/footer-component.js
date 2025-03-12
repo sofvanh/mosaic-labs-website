@@ -11,9 +11,10 @@ class FooterComponent extends HTMLElement {
             <div class="footer-links">
                 <h4>LINKS</h4>
                 <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/blog">Blog</a></li>
                     <li><a href="https://nexus-tool.com">Nexus</a></li>
                     <li><a href="https://pantheon.chat">Pantheon</a></li>
-                    <li><a href="/blog">Blog</a></li>
                     <li><a href="https://github.com/sofvanh">GitHub</a></li>
                 </ul>
             </div>

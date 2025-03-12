@@ -20,6 +20,8 @@ const template = (content, metadata) => `
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
+  <script src="../components/gtag-component.js" defer></script>
+  <script src="../components/footer-component.js" defer></script>
 </head>
 <body>
   <div class="content">
@@ -34,9 +36,12 @@ const template = (content, metadata) => `
   month: 'long',
   day: 'numeric'
 })}</time>
+        ${metadata.author ? `<div class="post-author">${metadata.author}</div>` : ''}
       </div>
       ${content}
     </article>
+    <hr>
+    <footer-component></footer-component>
   </div>
 </body>
 </html>
@@ -49,12 +54,15 @@ const generatePostListHTML = (posts) => {
       <h2 class="post-title">
         <a href="/blog/${post.slug}">${post.title}</a>
       </h2>
-      <div class="post-date">
-        <time datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', {
+      <div class="post-metadata">
+        ${post.author ? `<div class="post-author">by ${post.author}</div>` : ''}
+        <div>
+          <time class="post-date" datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   })}</time>
+        </div>
       </div>
       ${post.description ? `<p>${post.description}</p>` : ''}
     </div>
@@ -83,6 +91,7 @@ async function buildBlog() {
       title: data.title || file.replace('.md', ''),
       date: data.date || new Date().toISOString().split('T')[0],
       description: data.description || '',
+      author: data.author || '',
       slug: file.replace('.md', '')
     };
 
@@ -124,7 +133,7 @@ function updateIndexPage(posts) {
     const heroMatch = /<div class="hero[\s\S]*?<\/div>\s*<\/div>/i.exec(indexContent);
     const heroContent = heroMatch ? heroMatch[0] : '<div class="hero small"><div class="text-center"><h1 class="title">Mosaic Labs Blog</h1></div></div>';
 
-    const backLinkMatch = /<a href="[^"]*">Back to Home[^<]*<\/a>/i.exec(indexContent);
+    const backLinkMatch = /<a href="[^"]*"><- Back to Home[^<]*<\/a>/i.exec(indexContent);
     const backLinkContent = backLinkMatch ? backLinkMatch[0] : '<a href="/">Back to Home</a>';
 
     const footerMatch = /<hr>[\s\S]*?<footer-component><\/footer-component>/i.exec(indexContent);
@@ -152,35 +161,7 @@ ${headContent}
     fs.writeFileSync(existingIndexPath, newIndexContent);
     console.log(`Updated ${existingIndexPath}`);
   } else {
-    // If index.html doesn't exist, create a basic one
-    const indexTemplate = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Blog | Mosaic Labs</title>
-  <link rel="stylesheet" type="text/css" href="../css/style.css">
-</head>
-<body>
-  <div class="hero small">
-    <div class="text-center">
-      <h1 class="title">Mosaic Labs Blog</h1>
-    </div>
-  </div>
-  <div class="content">
-    <a href="/">Back to Home</a>
-    <main>
-      <div id="posts-list">
-        ${generatePostListHTML(posts)}
-      </div>
-    </main>
-    <hr>
-    <footer-component></footer-component>
-  </div>
-</body>
-</html>
-`;
-    fs.writeFileSync(existingIndexPath, indexTemplate);
-    console.log(`Created ${existingIndexPath}`);
+    throw error(`Couldn't find ${existingIndexPath}`);
   }
 }
 

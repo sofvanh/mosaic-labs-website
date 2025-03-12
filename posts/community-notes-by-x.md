@@ -1,6 +1,7 @@
 ---
 title: "Community Notes by X"
 date: "2024-03-19"
+author: "Nicholas Kees Dupuis"
 description: "How X's Community Notes algorithm surfaces fact-checks with cross-partisan support"
 ---
 I did an exploration into how [Community Notes](https://en.wikipedia.org/wiki/Community_Notes) (formerly Birdwatch) from X (formerly Twitter) works, and how its algorithm decides which notes get displayed to the wider community. In this post, I’ll share and explain what I found, as well as offer some comments.   

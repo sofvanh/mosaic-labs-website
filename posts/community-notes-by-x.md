@@ -26,36 +26,36 @@ The full algorithm, while open-source, is quite complicated and I don’t fully 
 **Notes** are short comments written by permitted users on posts they felt needed clarification. These are not immediately made publicly visible on X, first needing to be certified as “helpful” by aggregating ratings by other Community Notes users using their ranking algorithm.   
  
 
-Users are invited to rate notes as either “not helpful,” “somewhat helpful,” or “helpful.” The results of all user-note pairs are recorded in a matrix \\(r\\) where each element \\(r_{un} \in \{0, 0.5, 1, null\}\\) corresponds to how user \\(u\\) rated note \\(n\\). Users only rate a small fraction of notes, so most elements in the matrix are “null.” Non-null elements are called “observed” ratings, and values of 0, 0.5, and 1 correspond to the qualitative ratings of “not helpful,” “somewhat helpful,” and “helpful” respectively.
+Users are invited to rate notes as either “not helpful,” “somewhat helpful,” or “helpful.” The results of all user-note pairs are recorded in a matrix $r$ where each element $r_{un} \in \{0, 0.5, 1, null\}$ corresponds to how user $u$ rated note $n$. Users only rate a small fraction of notes, so most elements in the matrix are “null.” Non-null elements are called “observed” ratings, and values of 0, 0.5, and 1 correspond to the qualitative ratings of “not helpful,” “somewhat helpful,” and “helpful” respectively.
 
 ![](https://lh7-us.googleusercontent.com/U-ngibxRy-fHyn9NZ8NUTsZyo1RiMS8OoBAvWWpHb_3Xk7fULiZnnYfkKVYuidSpsjpamPKKYQgS8nqPZFAiuj0ZXSFxCzqc58MV3Prc91S6GhlJzq3cp5kSXu-q8nvBsGTqv-gzsNyL9PIWjZpcrsQ)
 
 This rating matrix is then used by their algorithm to compute a helpfulness score for each note. It does this is by learning a model of the ratings matrix which explains each observed rating as a sum of four terms: 
 
-\\(\hat{r}_{un} = \mu + i_u + i_n + f_u \cdot f_n\\)
+$\hat{r}_{un} = \mu + i_u + i_n + f_u \cdot f_n$
 
 Where:
 
-*   \\(\mu\\): Global intercept (shared across all ratings) 
-*   \\(i_u\\): User intercept (shared across all ratings by user u)
-*   \\(i_n\\): Note intercept (shared across all ratings of note n) This is the term which will eventually determine a note's "helpfulness."
-*   \\(f_u\\), \\(f_n\\): Factor vectors for \\(u\\) and \\(n\\). The dot product of these vectors is intended to describe the “ideological agreement” between a user and a note. These vectors are currently one dimensional (each just a single number), though the algorithm is in principle agnostic to the number of dimensions. 
+*   $\mu$: Global intercept (shared across all ratings) 
+*   $i_u$: User intercept (shared across all ratings by user u)
+*   $i_n$: Note intercept (shared across all ratings of note n) This is the term which will eventually determine a note's "helpfulness."
+*   $f_u$, $f_n$: Factor vectors for $u$ and $n$. The dot product of these vectors is intended to describe the “ideological agreement” between a user and a note. These vectors are currently one dimensional (each just a single number), though the algorithm is in principle agnostic to the number of dimensions. 
 
 For U users and N notes that gets us  1 + 2U + 2N free parameters making up this model. These parameters are estimated via gradient descent every hour, minimizing the following squared error loss function (for observed ratings only):
 
-\\(\sum_{r_{un}} (r_{un} - \hat{r}_{un})^2 + \lambda_i (i_u^2 + i_n^2 + \mu^2) + \lambda_f (||f_u||^2 + ||f_n||^2)\\)
+$\sum_{r_{un}} (r_{un} - \hat{r}_{un})^2 + \lambda_i (i_u^2 + i_n^2 + \mu^2) + \lambda_f (||f_u||^2 + ||f_n||^2)$
 
-The first term is the square difference between the model’s prediction and the actual rating, and the final two terms are regularization terms, where \\(\lambda_i =0.15\\) and \\(\lambda_f=0.03\\). \\(\lambda_i\\) is deliberately set significantly higher than \\(\lambda_f\\) to push the algorithm to rely primarily on the factor vectors to explain the ratings a note receives, keeping the other terms as low as possible. The original Birdwatch paper presents this choice as risk aversion[^rdjw127zfdp]:
+The first term is the square difference between the model’s prediction and the actual rating, and the final two terms are regularization terms, where $\lambda_i =0.15$ and $\lambda_f=0.03$. $\lambda_i$ is deliberately set significantly higher than $\lambda_f$ to push the algorithm to rely primarily on the factor vectors to explain the ratings a note receives, keeping the other terms as low as possible. The original Birdwatch paper presents this choice as risk aversion[^rdjw127zfdp]:
 
 > …we particularly value precision (having a low number of false positives) over recall (having a low number of false negatives) due to risks to our community and reputation from increasing visibility of low quality notes.
 
-This algorithm, in the process of fitting all the different factor vectors for notes and users, **automatically identifies an ideological spectrum**. Because of the asymmetric regularization above, it also explains the ratings as much as possible in terms of this ideological spectrum, such that the intercept terms \\(\mu\\), \\(i_u\\), and \\(i_n\\) end up describing how much the rating outcomes *differ* from what was predicted by the ideological part of the model.   
+This algorithm, in the process of fitting all the different factor vectors for notes and users, **automatically identifies an ideological spectrum**. Because of the asymmetric regularization above, it also explains the ratings as much as possible in terms of this ideological spectrum, such that the intercept terms $\mu$, $i_u$, and $i_n$ end up describing how much the rating outcomes *differ* from what was predicted by the ideological part of the model.   
  
 
-Finally, a note’s helpfulness score is determined by the final value reached by \\(i_n\\). **This helpfulness score is highest if the note is ranked as “helpful” by Community Notes users more often than the rest of the model would predict.** If this parameter reaches a threshold of \\(i_n > 0.4\\), then the note is certified as “helpful” and is shown to the wider X community.[^5xykapxkjpu] Likewise, if \\(i_n < -0.04\\), then the note is certified as “not helpful.”[^t1y2rb8jkha]   
+Finally, a note’s helpfulness score is determined by the final value reached by $i_n$. **This helpfulness score is highest if the note is ranked as “helpful” by Community Notes users more often than the rest of the model would predict.** If this parameter reaches a threshold of $i_n > 0.4$, then the note is certified as “helpful” and is shown to the wider X community.[^5xykapxkjpu] Likewise, if $i_n < -0.04$, then the note is certified as “not helpful.”[^t1y2rb8jkha]   
  
 
-The following figure illustrates the results from the original Birdwatch paper after applying this algorithm, where the y-axis is \\(i_n\\), and the x-axis is \\(f_n\\):
+The following figure illustrates the results from the original Birdwatch paper after applying this algorithm, where the y-axis is $i_n$, and the x-axis is $f_n$:
 
 ![](https://lh7-us.googleusercontent.com/mN85i_THz4MQrV2veOv2pTcO6NlinNFaN09FfGejwvAgpMSKsD5np39D4lG4SkxkE3-EMFZbtFb4KUW5A7x4rd0_Vr7I1XgUgAYxIGQ0pl02xrO_tlnalMGpAQhH3QTUMJyTmzinDicCIQWQr7z2CvU)
 
@@ -64,7 +64,7 @@ Some further details and comments
 
 **Factor vectors**: First thing to note is that, to avoid overfitting, the factor vectors are currently just one dimensional (though they plan to increase the dimensions when they have more data). In practice, across all notes, this results in a spectrum where a negative factor roughly corresponds to the political left, and a positive factor corresponds to the political right (note that this spectrum was not hardcoded, but rather found automatically by the algorithm). This leaves a lot to be desired. In particular, because **“consensus between the left and right” is used as a proxy for high-quality information**, which might be good in some cases, but probably not for many others.[^c2f2dysibw] There are also plans to use multiple ranking models for different groups, though this seems mostly to be about dealing with geographic and linguistic diversity.[^78m4twa2vsl] 
 
-**Modeling uncertainty**: Another detail is that they actually run gradient descent multiple times, including extra extreme ratings from “pseudo-raters” in each run. This forms a distribution of helpfulness scores, and in the spirit of risk-aversion, they use the lower-bound value of \\(i_n\\) to classify a note as “helpful,” and an upper bound value of \\(i_n\\) to classify it as “not helpful.”[^pyyuakpea3l] 
+**Modeling uncertainty**: Another detail is that they actually run gradient descent multiple times, including extra extreme ratings from “pseudo-raters” in each run. This forms a distribution of helpfulness scores, and in the spirit of risk-aversion, they use the lower-bound value of $i_n$ to classify a note as “helpful,” and an upper bound value of $i_n$ to classify it as “not helpful.”[^pyyuakpea3l] 
 
 **User helpfulness**: This is the weirdest part in my opinion. They actually estimate the model parameters in two separate rounds. After the first round, the algorithm computes a “user helpfulness” score for each user based on how well their own ratings predicted the final rating assigned by the algorithm. Users which do a poor job of predicting the group decision are labeled as unhelpful, and are filtered out for the second round, which will give the final verdict on all the notes.[^qzwpuog8b0a] I don’t know how strict filtering is in practice, but from [the docs](https://communitynotes.twitter.com/guide/en/under-the-hood/contributor-scores) it seems that at least two thirds of their ratings need to match the group consensus in order to be counted in the second round. This is also the key to “rating impact,” which unlocks the ability to write your own notes, where you get permission only once you have correctly predicted at least 5 note outcomes.
 

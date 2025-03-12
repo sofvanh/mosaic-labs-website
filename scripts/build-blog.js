@@ -12,11 +12,30 @@ const template = (content, metadata) => `
 <!DOCTYPE html>
 <html>
 <head>
-  <title>${metadata.title}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${metadata.title} | Mosaic Labs</title>
+  <meta name="description" content="${metadata.description || `${metadata.title} - Mosaic Labs Blog`}">
+  <link rel="icon" type="image/png" href="../favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.mosaic-labs.org/blog/${metadata.slug}">
+  <meta property="og:title" content="${metadata.title} | Mosaic Labs">
+  <meta property="og:description" content="${metadata.description || `${metadata.title} - Mosaic Labs Blog`}">
+  <meta property="og:image" content="https://mosaic-labs.org/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://www.mosaic-labs.org/blog/${metadata.slug}">
+  <meta property="twitter:title" content="${metadata.title} | Mosaic Labs">
+  <meta property="twitter:description" content="${metadata.description || `${metadata.title} - Mosaic Labs Blog`}">
+  <meta property="twitter:image" content="https://mosaic-labs.org/images/og-image.jpg">
+
   <script src="../components/gtag-component.js" defer></script>
   <script src="../components/footer-component.js" defer></script>
 </head>

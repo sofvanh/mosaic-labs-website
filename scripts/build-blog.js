@@ -30,13 +30,13 @@ const template = (content, metadata) => `
     </header>
     <article>
       <h1>${metadata.title}</h1>
+      ${metadata.author ? `<div class="post-author">${metadata.author}</div>` : ''}
       <div class="post-metadata">
         <time datetime="${metadata.date}">${new Date(metadata.date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 })}</time>
-        ${metadata.author ? `<div class="post-author">${metadata.author}</div>` : ''}
       </div>
       ${content}
     </article>

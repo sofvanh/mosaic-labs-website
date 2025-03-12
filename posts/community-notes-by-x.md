@@ -107,9 +107,9 @@ I probably left a lot out, but hopefully that’s a useful overview (if I made a
 
 [^rdjw127zfdp]:  This philosophy of risk aversion appears frequently in many of their design decisions. 
 
-[^5xykapxkjpu]:  To be considered helpful, a note also needs to have a factor vector \(abs(f_n) < 0.5\) (as a final check against polarization).  
+[^5xykapxkjpu]:  To be considered helpful, a note also needs to have a factor vector $abs(f_n) < 0.5$ (as a final check against polarization).  
 
-[^t1y2rb8jkha]:  Full disclosure, sometimes they use a threshold of -0.04 and sometimes a threshold of \(-0.05 - 0.8*abs(f_n)\), and I don’t totally understand when or why. 
+[^t1y2rb8jkha]:  Full disclosure, sometimes they use a threshold of -0.04 and sometimes a threshold of $-0.05 - 0.8*abs(f_n)$, and I don’t totally understand when or why. 
 
 [^c2f2dysibw]:  Though I suppose plausibly the worst disinformation on X at the moment might be mostly political claims. 
 

@@ -441,3 +441,7 @@ input {
 .flex-fill {
   flex: 1;
 }
+
+article img {
+  max-width: 100%;
+}

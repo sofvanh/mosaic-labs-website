@@ -16,6 +16,9 @@ const template = (content, metadata) => `
 <html>
 <head>
   <title>${metadata.title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>

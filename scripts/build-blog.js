@@ -44,7 +44,7 @@ const generatePostListHTML = (posts) => {
   return posts.map(post => `
     <div class="post-item">
       <h2 class="post-title">
-        <a href="/blog/${post.slug}.html">${post.title}</a>
+        <a href="/blog/${post.slug}">${post.title}</a>
       </h2>
       <div class="post-date">
         <time datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', {

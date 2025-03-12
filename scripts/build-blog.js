@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
+const markedFootnote = require('marked-footnote');
+marked.use(markedFootnote());
 const matter = require('gray-matter');
 
 const postsDir = path.join(__dirname, '../posts');

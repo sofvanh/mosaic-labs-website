@@ -5,5 +5,8 @@
   },
   "scripts": {
     "build-blog": "node scripts/build-blog.js"
+  },
+  "dependencies": {
+    "marked-footnote": "^1.2.4"
   }
 }

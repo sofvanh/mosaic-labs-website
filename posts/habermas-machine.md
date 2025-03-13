@@ -43,7 +43,7 @@ The HM itself consists of two finetuned [Chinchilla](https://arxiv.org/abs/2203
 
 The machine produces a group statement by taking the following steps:
 
-1.  **Generation**: The generative model is prompted with the original question and the opinions provided by 5 human participants. This is used to independently sample 16 candidate group statements.
+1.  **Generation**: The generative model is prompted with the original question and the opinions provided by 5 human participants.[^5] This is used to independently sample 16 candidate group statements.
 2.  **Prediction**: The reward model is then used to predict how each person will rank the candidate group statements. The reward model is prompted with the question, a specific person’s opinion, and one of the candidate group statements. The model then outputs a score estimating how likely the person would rank that statement above the others.
 3.  **Simulated Election**: The predicted rankings of candidate group statements are then used to run a simulated election, resulting in a single winning group statement.
 
@@ -71,7 +71,7 @@ Comparison to Gemini 1.5 Pro
 
 The authors also performed an evaluation of Gemini 1.5 Pro’s abilities, which seemed noteworthy. 
 
-The authors try to evaluate the effect of using a state of the art Gemini model, but by just prompting it and doing no finetuning. They compare how well both Gemini and the 1.4B reward model are able to predict human rankings, and they find that Gemini significantly underperforms the reward model. 
+The authors try to evaluate the effect of using a state of the art Gemini model, but by just prompting it and doing no finetuning. They compare how well both Gemini and the 1.4B reward model are able to predict human rankings, and they find that **Gemini significantly underperforms the reward model.** 
 
 Gemini is prompted with the question and a person’s initial opinion, and is then used to rank candidate group statements in two different ways:
 
@@ -114,7 +114,7 @@ Each iteration trains on roughly 5000 samples, running multiple epochs until a v
 Reward Model
 ------------
 
-For each set of human opinions, the generative model produces 4 candidate group statements which are then ranked by the participants, and the reward model is then trained to predict these rankings. The real human rankings are first converted into pairwise preferences, and the reward model is trained to fit a [Bradley-Terry](https://en.wikipedia.org/wiki/Bradley%E2%80%93Terry_model) preference model, estimating a score for each statement proportional to how likely it  is to be preferred.  
+For each set of human opinions, the generative model produces 4 candidate group statements which are then ranked by the participants, and the reward model is then trained to predict these rankings. The real human rankings are first converted into pairwise preferences, and the reward model is trained to fit a [Bradley-Terry](https://en.wikipedia.org/wiki/Bradley%E2%80%93Terry_model) preference model, estimating a score for each statement proportional to how likely it is to be preferred. 
 
 A linear layer is added on top of the 1.4B base model which outputs a scalar value. The model learns to compute this value from seeing a prompt including the question, the initial opinion response, and a single candidate group statement.
 
@@ -122,7 +122,7 @@ Example Session
 ===============
 
 The following is an example run of the deliberation process, taken from the supplementary materials. This session has been modified to compare 4 different ways to generate a group statement:
-*    **SFT+RM**: This is the full HM, using both a model with supervised finetuning (SFT) and a reward model guided simulated election (RW). 
+*    **SFT+RM**: This is the full HM, using both a model with supervised finetuning (SFT) and a reward model guided simulated election (RM). 
 *    **SFT**: This uses supervised finetuning, but no simulated election.
 *    **Base+RM**: This uses a simulated election, but uses the original base model without finetuning. 
 *    **Base**: This generates a group statement by just prompting the base model. 
@@ -139,7 +139,7 @@ The group evaluates the question of compulsory voting, and converges toward the 
 Initial Phase
 -------------
 
-Participants submit their opinions, and a group statement is chosen. In this case the HM (SFT + RM) produces the winning statement. The statement, while acknowledging the possible benefits of compulsory voting, seems to side primarily against it. Curiously, rather than just summarizing the human opinions, the HM offers a novel compromise position (not brought up by any of the participants), that the government should invest in non-compulsory methods of increasing turnout instead. 
+Participants submit their opinions, and a group statement is chosen. In this case the HM (SFT + RM) produces the winning statement. The statement, while acknowledging the possible benefits of compulsory voting, seems to side primarily against it. Curiously, rather than just summarizing the human opinions, the **HM offers a novel compromise position** (not brought up by any of the participants), that the government should invest in non-coercive methods of increasing turnout instead. 
 
 ![](https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/5cf23132f2252916a69f3cc7ef6817334e6e47d1abfc7526.png)
 
@@ -171,3 +171,5 @@ This work uses an LLM which is fairly rudimentary (by 2025 standards), and so it
 [^er87dhu0426]: All elections in the paper, simulated or real, use the [Schulze voting rule](https://en.wikipedia.org/wiki/Schulze_method). This method was chosen because of 1) independence of “clones” and 2) robustness to strategic voting.
 
 [^4]: This is meant to be a proxy for evaluating Gemini as a generator model. This is a pretty strange method, and I'm personally not surprised that it failed to work.
+
+[^5]: The number of participants is usually 5, but the system is also trained to be robust to smaller groups.

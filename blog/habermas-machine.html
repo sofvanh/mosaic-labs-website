@@ -68,7 +68,7 @@
 </ul>
 <p>The machine produces a group statement by taking the following steps:</p>
 <ol>
-<li><strong>Generation</strong>: The generative model is prompted with the original question and the opinions provided by 5 human participants. This is used to independently sample 16 candidate group statements.</li>
+<li><strong>Generation</strong>: The generative model is prompted with the original question and the opinions provided by 5 human participants.<sup><a id="footnote-ref-5" href="#footnote-5" data-footnote-ref aria-describedby="footnote-label">4</a></sup> This is used to independently sample 16 candidate group statements.</li>
 <li><strong>Prediction</strong>: The reward model is then used to predict how each person will rank the candidate group statements. The reward model is prompted with the question, a specific person’s opinion, and one of the candidate group statements. The model then outputs a score estimating how likely the person would rank that statement above the others.</li>
 <li><strong>Simulated Election</strong>: The predicted rankings of candidate group statements are then used to run a simulated election, resulting in a single winning group statement.</li>
 </ol>
@@ -83,10 +83,10 @@
 <h2>Comparison to Gemini 1.5 Pro</h2>
 <p><em>Not included in the final paper (just the supplemental materials).</em></p>
 <p>The authors also performed an evaluation of Gemini 1.5 Pro’s abilities, which seemed noteworthy. </p>
-<p>The authors try to evaluate the effect of using a state of the art Gemini model, but by just prompting it and doing no finetuning. They compare how well both Gemini and the 1.4B reward model are able to predict human rankings, and they find that Gemini significantly underperforms the reward model. </p>
+<p>The authors try to evaluate the effect of using a state of the art Gemini model, but by just prompting it and doing no finetuning. They compare how well both Gemini and the 1.4B reward model are able to predict human rankings, and they find that <strong>Gemini significantly underperforms the reward model.</strong> </p>
 <p>Gemini is prompted with the question and a person’s initial opinion, and is then used to rank candidate group statements in two different ways:</p>
 <ol>
-<li>Comparing the average log probability of tokens in each candidate group statement (ranking them from highest to lowest average probability)<sup><a id="footnote-ref-4" href="#footnote-4" data-footnote-ref aria-describedby="footnote-label">4</a></sup>.</li>
+<li>Comparing the average log probability of tokens in each candidate group statement (ranking them from highest to lowest average probability)<sup><a id="footnote-ref-4" href="#footnote-4" data-footnote-ref aria-describedby="footnote-label">5</a></sup>.</li>
 <li>Giving all candidates to the model and asking explicitly for a ranking.</li>
 </ol>
 <p>This is done to predict individual rankings as well as aggregate rankings (by running a simulated election with individual rankings). In all cases Gemini does better than chance, but it always performs significantly worse than the finetuned reward model. I personally found this surprising, given the large difference in scale between the models.</p>
@@ -105,12 +105,12 @@
 <p><img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXdWpZXoVaq7gQIj4MdPEK72nVbe0FDOXaXsgoMn30f4uQOrKcKVHVStx8PQSR8rKuuzLUcI6HDohbTY6cSpnsUr0IoiUkcivawkK0vPZIEGBLiYooSCBBkiMad2MrrnUie3kyXPtQ?key=aWp0E8rlx3pi0wuSPlVVoKs7" alt=""></p>
 <p>Each iteration trains on roughly 5000 samples, running multiple epochs until a validation set shows signs of overfitting. The same model was trained to do both phases of the deliberation process (initial and critique phases).</p>
 <h2>Reward Model</h2>
-<p>For each set of human opinions, the generative model produces 4 candidate group statements which are then ranked by the participants, and the reward model is then trained to predict these rankings. The real human rankings are first converted into pairwise preferences, and the reward model is trained to fit a <a href="https://en.wikipedia.org/wiki/Bradley%E2%80%93Terry_model">Bradley-Terry</a> preference model, estimating a score for each statement proportional to how likely it  is to be preferred.  </p>
+<p>For each set of human opinions, the generative model produces 4 candidate group statements which are then ranked by the participants, and the reward model is then trained to predict these rankings. The real human rankings are first converted into pairwise preferences, and the reward model is trained to fit a <a href="https://en.wikipedia.org/wiki/Bradley%E2%80%93Terry_model">Bradley-Terry</a> preference model, estimating a score for each statement proportional to how likely it is to be preferred. </p>
 <p>A linear layer is added on top of the 1.4B base model which outputs a scalar value. The model learns to compute this value from seeing a prompt including the question, the initial opinion response, and a single candidate group statement.</p>
 <h1>Example Session</h1>
 <p>The following is an example run of the deliberation process, taken from the supplementary materials. This session has been modified to compare 4 different ways to generate a group statement:</p>
 <ul>
-<li><strong>SFT+RM</strong>: This is the full HM, using both a model with supervised finetuning (SFT) and a reward model guided simulated election (RW). </li>
+<li><strong>SFT+RM</strong>: This is the full HM, using both a model with supervised finetuning (SFT) and a reward model guided simulated election (RM). </li>
 <li><strong>SFT</strong>: This uses supervised finetuning, but no simulated election.</li>
 <li><strong>Base+RM</strong>: This uses a simulated election, but uses the original base model without finetuning. </li>
 <li><strong>Base</strong>: This generates a group statement by just prompting the base model.</li>
@@ -120,7 +120,7 @@
 <p>The group evaluates the question of compulsory voting, and converges toward the position that the government should not fine citizens who don&#39;t vote. Participant 1 still dissents with the majority opinion at the end.</p>
 <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/7fbdc7351fce2c8b10863be1ef24d8acb27523af5361e6c1.png" alt=""></p>
 <h2>Initial Phase</h2>
-<p>Participants submit their opinions, and a group statement is chosen. In this case the HM (SFT + RM) produces the winning statement. The statement, while acknowledging the possible benefits of compulsory voting, seems to side primarily against it. Curiously, rather than just summarizing the human opinions, the HM offers a novel compromise position (not brought up by any of the participants), that the government should invest in non-compulsory methods of increasing turnout instead. </p>
+<p>Participants submit their opinions, and a group statement is chosen. In this case the HM (SFT + RM) produces the winning statement. The statement, while acknowledging the possible benefits of compulsory voting, seems to side primarily against it. Curiously, rather than just summarizing the human opinions, the <strong>HM offers a novel compromise position</strong> (not brought up by any of the participants), that the government should invest in non-coercive methods of increasing turnout instead. </p>
 <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/5cf23132f2252916a69f3cc7ef6817334e6e47d1abfc7526.png" alt=""></p>
 <h2>Critique Phase</h2>
 <p>Participants submit their critiques of the winning group opinion, and a new revised group opinion is chosen. In this case the finetuned model which doesn&#39;t use a simulated election (SFT) produces the winning statement. The refined statements are all very similar to the winning statement from the previous phase, changing only minor details. Participant 1 has also stopped participating for some reason. </p>
@@ -142,6 +142,9 @@
 </li>
 <li id="footnote-er87dhu0426">
 <p>All elections in the paper, simulated or real, use the <a href="https://en.wikipedia.org/wiki/Schulze_method">Schulze voting rule</a>. This method was chosen because of 1) independence of “clones” and 2) robustness to strategic voting. <a href="#footnote-ref-er87dhu0426" data-footnote-backref aria-label="Back to reference er87dhu0426">↩</a></p>
+</li>
+<li id="footnote-5">
+<p>The number of participants is usually 5, but the system is also trained to be robust to smaller groups. <a href="#footnote-ref-5" data-footnote-backref aria-label="Back to reference 5">↩</a></p>
 </li>
 <li id="footnote-4">
 <p>This is meant to be a proxy for evaluating Gemini as a generator model. This is a pretty strange method, and I&#39;m personally not surprised that it failed to work. <a href="#footnote-ref-4" data-footnote-backref aria-label="Back to reference 4">↩</a></p>

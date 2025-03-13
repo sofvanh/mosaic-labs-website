@@ -2,7 +2,7 @@
 title: "Community Notes by X"
 date: "2024-03-19"
 author: "Nicholas Kees Dupuis"
-description: "How X's Community Notes algorithm surfaces fact-checks with cross-partisan support"
+description: "Explanation of how X's Community Notes algorithm crowdsources fact-checking by promoting content with cross-partisan support."
 ---
 I did an exploration into how [Community Notes](https://en.wikipedia.org/wiki/Community_Notes) (formerly Birdwatch) from X (formerly Twitter) works, and how its algorithm decides which notes get displayed to the wider community. In this post, I’ll share and explain what I found, as well as offer some comments.   
  
@@ -26,7 +26,7 @@ The full algorithm, while open-source, is quite complicated and I don’t fully 
 **Notes** are short comments written by permitted users on posts they felt needed clarification. These are not immediately made publicly visible on X, first needing to be certified as “helpful” by aggregating ratings by other Community Notes users using their ranking algorithm.   
  
 
-Users are invited to rate notes as either “not helpful,” “somewhat helpful,” or “helpful.” The results of all user-note pairs are recorded in a matrix $r$ where each element $r_{un} \in \{0, 0.5, 1, null\}$ corresponds to how user $u$ rated note $n$. Users only rate a small fraction of notes, so most elements in the matrix are “null.” Non-null elements are called “observed” ratings, and values of 0, 0.5, and 1 correspond to the qualitative ratings of “not helpful,” “somewhat helpful,” and “helpful” respectively.
+Users are invited to rate notes as either “not helpful,” “somewhat helpful,” or “helpful.” The results of all user-note pairs are recorded in a matrix $r$ where each element $r_{un} \in \\{0, 0.5, 1, \text{null}\\}$ corresponds to how user $u$ rated note $n$. Users only rate a small fraction of notes, so most elements in the matrix are “null.” Non-null elements are called “observed” ratings, and values of 0, 0.5, and 1 correspond to the qualitative ratings of “not helpful,” “somewhat helpful,” and “helpful” respectively.
 
 ![](https://lh7-us.googleusercontent.com/U-ngibxRy-fHyn9NZ8NUTsZyo1RiMS8OoBAvWWpHb_3Xk7fULiZnnYfkKVYuidSpsjpamPKKYQgS8nqPZFAiuj0ZXSFxCzqc58MV3Prc91S6GhlJzq3cp5kSXu-q8nvBsGTqv-gzsNyL9PIWjZpcrsQ)
 
@@ -121,7 +121,7 @@ I probably left a lot out, but hopefully that’s a useful overview (if I made a
 
 [^414l34tq4mi]:  Users are weighted by a complicated function which punishes strong ideological disagreement with the note.  
 
-[^d4h8bwlnhq]:  While memes do convey important information not easily shared via specific and concrete claims, it does make discussing their “accuracy” really messy and hard to do (e.g. from the LW community: this commentary on a Shoggoth meme by @TurnTrout ). 
+[^d4h8bwlnhq]:  While memes do convey important information not easily shared via specific and concrete claims, it does make discussing their “accuracy” really messy and hard to do (e.g. from the LW community: this [commentary](https://www.lesswrong.com/posts/dqSwccGTWyBgxrR58/turntrout-s-shortform-feed?commentId=XHktatQRYpsfritrA) on a Shoggoth meme by [@TurnTrout](https://www.lesswrong.com/users/turntrout?mention=user) ). 
 
 [^lsfywmzlr1f]:  Academics clearly can never resist a pun, even if it’s a pun on another pun.  
 

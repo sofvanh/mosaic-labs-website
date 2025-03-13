@@ -5,17 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Community Notes by X | Mosaic Labs</title>
-  <meta name="description" content="How X's Community Notes algorithm surfaces fact-checks with cross-partisan support">
+  <meta name="description" content="Explanation of how X's Community Notes algorithm crowdsources fact-checking by promoting content with cross-partisan support.">
   <link rel="icon" type="image/png" href="../favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.mosaic-labs.org/blog/community-notes-by-x">
   <meta property="og:title" content="Community Notes by X | Mosaic Labs">
-  <meta property="og:description" content="How X's Community Notes algorithm surfaces fact-checks with cross-partisan support">
+  <meta property="og:description" content="Explanation of how X's Community Notes algorithm crowdsources fact-checking by promoting content with cross-partisan support.">
   <meta property="og:image" content="https://mosaic-labs.org/images/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -23,7 +27,7 @@
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://www.mosaic-labs.org/blog/community-notes-by-x">
   <meta property="twitter:title" content="Community Notes by X | Mosaic Labs">
-  <meta property="twitter:description" content="How X's Community Notes algorithm surfaces fact-checks with cross-partisan support">
+  <meta property="twitter:description" content="Explanation of how X's Community Notes algorithm crowdsources fact-checking by promoting content with cross-partisan support.">
   <meta property="twitter:image" content="https://mosaic-labs.org/images/og-image.jpg">
 
   <script src="../components/gtag-component.js" defer></script>
@@ -38,12 +42,12 @@
       <h1>Community Notes by X</h1>
       <div class="post-author">Nicholas Kees Dupuis</div>
       <div class="post-metadata">
-        <time datetime="2024-03-19">March 19, 2024</time>
+        <time datetime="2024-03-19">March 18, 2024</time>
       </div>
       <p>I did an exploration into how <a href="https://en.wikipedia.org/wiki/Community_Notes">Community Notes</a> (formerly Birdwatch) from X (formerly Twitter) works, and how its algorithm decides which notes get displayed to the wider community. In this post, I’ll share and explain what I found, as well as offer some comments.   
  </p>
 <p><img src="https://lh7-us.googleusercontent.com/ubxhCRO58b1v_eBZjrI74Zj25rfPjKWDxTeZ6CpRGf-t6GyJOMqr7vvC1khUYptxGkCd2s2c1_hqw5aZV2ko5o-Se5SMavcOxiNNT3bQm1lM1x3vp6wwZFRsWTgBaXAh939qGSOArrT6Mcy31eYvyak" alt=""></p>
-<p>Community Notes is a fact-checking tool available to US-based users of X/Twitter which allows readers to attach notes to posts to give them clarifying context. It uses an <a href="https://github.com/twitter/communitynotes">open-source</a> <a href="https://www.belfercenter.org/publication/bridging-based-ranking">bridging-based ranking</a> algorithm intended to <strong>promote notes which receive cross-partisan support</strong>, and demote notes with a strong partisan lean. The tool seems to be pretty popular overall, and most of the criticism aimed toward it seems to be about how Community Notes fails to be a <a href="https://www.techdirt.com/2023/10/31/community-notes-is-a-useful-tool-for-some-things-but-not-as-a-full-replacement-for-trust-safety/">sufficient replacement</a> for other, more top-down moderation systems.[^7v168kvc2y3] </p>
+<p>Community Notes is a fact-checking tool available to US-based users of X/Twitter which allows readers to attach notes to posts to give them clarifying context. It uses an <a href="https://github.com/twitter/communitynotes">open-source</a> <a href="https://www.belfercenter.org/publication/bridging-based-ranking">bridging-based ranking</a> algorithm intended to <strong>promote notes which receive cross-partisan support</strong>, and demote notes with a strong partisan lean. The tool seems to be pretty popular overall, and most of the criticism aimed toward it seems to be about how Community Notes fails to be a <a href="https://www.techdirt.com/2023/10/31/community-notes-is-a-useful-tool-for-some-things-but-not-as-a-full-replacement-for-trust-safety/">sufficient replacement</a> for other, more top-down moderation systems.<sup><a id="footnote-ref-7v168kvc2y3" href="#footnote-7v168kvc2y3" data-footnote-ref aria-describedby="footnote-label">1</a></sup> </p>
 <p>This seems interesting to me as an experiment in social technology that aims to <strong>improve group epistemics</strong>, and understanding how it works seems like a good place to start before trying to design other group epistemics algorithms. </p>
 <h1>How does the ranking algorithm work?</h1>
 <p>The full algorithm, while open-source, is quite complicated and I don’t fully understand every facet of it, but I’ve done a once-over read of the <a href="https://github.com/twitter/communitynotes/blob/main/birdwatch_paper_2022_10_27.pdf">original Birdwatch paper</a>, gone through the <a href="https://communitynotes.twitter.com/guide/en/under-the-hood/ranking-notes">Community Notes documentation</a>, and read this <a href="https://vitalik.eth.limo/general/2023/08/16/communitynotes.html">summary/commentary</a> by Vitalik Buterin. Here’s a summary of the “core algorithm” as I understand it (to which much extra logic gets attached):   
@@ -52,67 +56,106 @@
  </p>
 <p><strong>Notes</strong> are short comments written by permitted users on posts they felt needed clarification. These are not immediately made publicly visible on X, first needing to be certified as “helpful” by aggregating ratings by other Community Notes users using their ranking algorithm.   
  </p>
-<p>Users are invited to rate notes as either “not helpful,” “somewhat helpful,” or “helpful.” The results of all user-note pairs are recorded in a matrix \(r\) where each element \(r_{un} \in {0, 0.5, 1, null}\) corresponds to how user \(u\) rated note \(n\). Users only rate a small fraction of notes, so most elements in the matrix are “null.” Non-null elements are called “observed” ratings, and values of 0, 0.5, and 1 correspond to the qualitative ratings of “not helpful,” “somewhat helpful,” and “helpful” respectively.</p>
+<p>Users are invited to rate notes as either “not helpful,” “somewhat helpful,” or “helpful.” The results of all user-note pairs are recorded in a matrix $r$ where each element $r_{un} \in \{0, 0.5, 1, \text{null}\}$ corresponds to how user $u$ rated note $n$. Users only rate a small fraction of notes, so most elements in the matrix are “null.” Non-null elements are called “observed” ratings, and values of 0, 0.5, and 1 correspond to the qualitative ratings of “not helpful,” “somewhat helpful,” and “helpful” respectively.</p>
 <p><img src="https://lh7-us.googleusercontent.com/U-ngibxRy-fHyn9NZ8NUTsZyo1RiMS8OoBAvWWpHb_3Xk7fULiZnnYfkKVYuidSpsjpamPKKYQgS8nqPZFAiuj0ZXSFxCzqc58MV3Prc91S6GhlJzq3cp5kSXu-q8nvBsGTqv-gzsNyL9PIWjZpcrsQ" alt=""></p>
 <p>This rating matrix is then used by their algorithm to compute a helpfulness score for each note. It does this is by learning a model of the ratings matrix which explains each observed rating as a sum of four terms: </p>
-<p>\(\hat{r}_{un} = \mu + i_u + i_n + f_u \cdot f_n\)</p>
+<p>$\hat{r}_{un} = \mu + i_u + i_n + f_u \cdot f_n$</p>
 <p>Where:</p>
 <ul>
-<li>\(\mu\): Global intercept (shared across all ratings) </li>
-<li>\(i_u\): User intercept (shared across all ratings by user u)</li>
-<li>\(i_n\): Note intercept (shared across all ratings of note n) This is the term which will eventually determine a note&#39;s &quot;helpfulness.&quot;</li>
-<li>\(f_u\), \(f_n\): Factor vectors for \(u\) and \(n\). The dot product of these vectors is intended to describe the “ideological agreement” between a user and a note. These vectors are currently one dimensional (each just a single number), though the algorithm is in principle agnostic to the number of dimensions.</li>
+<li>$\mu$: Global intercept (shared across all ratings) </li>
+<li>$i_u$: User intercept (shared across all ratings by user u)</li>
+<li>$i_n$: Note intercept (shared across all ratings of note n) This is the term which will eventually determine a note&#39;s &quot;helpfulness.&quot;</li>
+<li>$f_u$, $f_n$: Factor vectors for $u$ and $n$. The dot product of these vectors is intended to describe the “ideological agreement” between a user and a note. These vectors are currently one dimensional (each just a single number), though the algorithm is in principle agnostic to the number of dimensions.</li>
 </ul>
 <p> </p>
 <p>For U users and N notes that gets us  1 + 2U + 2N free parameters making up this model. These parameters are estimated via gradient descent every hour, minimizing the following squared error loss function (for observed ratings only):</p>
-<p>\(\sum_{r_{un}} (r_{un} - \hat{r}_{un})^2 + \lambda_i (i_u^2 + i_n^2 + \mu^2) + \lambda_f (||f_u||^2 + ||f_n||^2)\)</p>
-<p>The first term is the square difference between the model’s prediction and the actual rating, and the final two terms are regularization terms, where \(\lambda_i =0.15\) and \(\lambda_f=0.03\). \(\lambda_i\) is deliberately set significantly higher than \(\lambda_f\) to push the algorithm to rely primarily on the factor vectors to explain the ratings a note receives, keeping the other terms as low as possible. The original Birdwatch paper presents this choice as risk aversion[^rdjw127zfdp]:</p>
+<p>$\sum_{r_{un}} (r_{un} - \hat{r}_{un})^2 + \lambda_i (i_u^2 + i_n^2 + \mu^2) + \lambda_f (||f_u||^2 + ||f_n||^2)$</p>
+<p>The first term is the square difference between the model’s prediction and the actual rating, and the final two terms are regularization terms, where $\lambda_i =0.15$ and $\lambda_f=0.03$. $\lambda_i$ is deliberately set significantly higher than $\lambda_f$ to push the algorithm to rely primarily on the factor vectors to explain the ratings a note receives, keeping the other terms as low as possible. The original Birdwatch paper presents this choice as risk aversion<sup><a id="footnote-ref-rdjw127zfdp" href="#footnote-rdjw127zfdp" data-footnote-ref aria-describedby="footnote-label">2</a></sup>:</p>
 <blockquote>
 <p>…we particularly value precision (having a low number of false positives) over recall (having a low number of false negatives) due to risks to our community and reputation from increasing visibility of low quality notes.</p>
 </blockquote>
-<p>This algorithm, in the process of fitting all the different factor vectors for notes and users, <strong>automatically identifies an ideological spectrum</strong>. Because of the asymmetric regularization above, it also explains the ratings as much as possible in terms of this ideological spectrum, such that the intercept terms \(\mu\), \(i_u\), and \(i_n\) end up describing how much the rating outcomes <em>differ</em> from what was predicted by the ideological part of the model.   
+<p>This algorithm, in the process of fitting all the different factor vectors for notes and users, <strong>automatically identifies an ideological spectrum</strong>. Because of the asymmetric regularization above, it also explains the ratings as much as possible in terms of this ideological spectrum, such that the intercept terms $\mu$, $i_u$, and $i_n$ end up describing how much the rating outcomes <em>differ</em> from what was predicted by the ideological part of the model.   
  </p>
-<p>Finally, a note’s helpfulness score is determined by the final value reached by \(i_n\). <strong>This helpfulness score is highest if the note is ranked as “helpful” by Community Notes users more often than the rest of the model would predict.</strong> If this parameter reaches a threshold of \(i_n &gt; 0.4\), then the note is certified as “helpful” and is shown to the wider X community.[^5xykapxkjpu] Likewise, if \(i_n &lt; -0.04\), then the note is certified as “not helpful.”[^t1y2rb8jkha]   
+<p>Finally, a note’s helpfulness score is determined by the final value reached by $i_n$. <strong>This helpfulness score is highest if the note is ranked as “helpful” by Community Notes users more often than the rest of the model would predict.</strong> If this parameter reaches a threshold of $i_n &gt; 0.4$, then the note is certified as “helpful” and is shown to the wider X community.<sup><a id="footnote-ref-5xykapxkjpu" href="#footnote-5xykapxkjpu" data-footnote-ref aria-describedby="footnote-label">3</a></sup> Likewise, if $i_n &lt; -0.04$, then the note is certified as “not helpful.”<sup><a id="footnote-ref-t1y2rb8jkha" href="#footnote-t1y2rb8jkha" data-footnote-ref aria-describedby="footnote-label">4</a></sup>   
  </p>
-<p>The following figure illustrates the results from the original Birdwatch paper after applying this algorithm, where the y-axis is \(i_n\), and the x-axis is \(f_n\):</p>
+<p>The following figure illustrates the results from the original Birdwatch paper after applying this algorithm, where the y-axis is $i_n$, and the x-axis is $f_n$:</p>
 <p><img src="https://lh7-us.googleusercontent.com/mN85i_THz4MQrV2veOv2pTcO6NlinNFaN09FfGejwvAgpMSKsD5np39D4lG4SkxkE3-EMFZbtFb4KUW5A7x4rd0_Vr7I1XgUgAYxIGQ0pl02xrO_tlnalMGpAQhH3QTUMJyTmzinDicCIQWQr7z2CvU" alt=""></p>
 <h1>Some further details and comments</h1>
-<p><strong>Factor vectors</strong>: First thing to note is that, to avoid overfitting, the factor vectors are currently just one dimensional (though they plan to increase the dimensions when they have more data). In practice, across all notes, this results in a spectrum where a negative factor roughly corresponds to the political left, and a positive factor corresponds to the political right (note that this spectrum was not hardcoded, but rather found automatically by the algorithm). This leaves a lot to be desired. In particular, because <strong>“consensus between the left and right” is used as a proxy for high-quality information</strong>, which might be good in some cases, but probably not for many others.[^c2f2dysibw] There are also plans to use multiple ranking models for different groups, though this seems mostly to be about dealing with geographic and linguistic diversity.[^78m4twa2vsl] </p>
-<p><strong>Modeling uncertainty</strong>: Another detail is that they actually run gradient descent multiple times, including extra extreme ratings from “pseudo-raters” in each run. This forms a distribution of helpfulness scores, and in the spirit of risk-aversion, they use the lower-bound value of \(i_n\) to classify a note as “helpful,” and an upper bound value of \(i_n\) to classify it as “not helpful.”[^pyyuakpea3l] </p>
-<p><strong>User helpfulness</strong>: This is the weirdest part in my opinion. They actually estimate the model parameters in two separate rounds. After the first round, the algorithm computes a “user helpfulness” score for each user based on how well their own ratings predicted the final rating assigned by the algorithm. Users which do a poor job of predicting the group decision are labeled as unhelpful, and are filtered out for the second round, which will give the final verdict on all the notes.[^qzwpuog8b0a] I don’t know how strict filtering is in practice, but from <a href="https://communitynotes.twitter.com/guide/en/under-the-hood/contributor-scores">the docs</a> it seems that at least two thirds of their ratings need to match the group consensus in order to be counted in the second round. This is also the key to “rating impact,” which unlocks the ability to write your own notes, where you get permission only once you have correctly predicted at least 5 note outcomes.</p>
+<p><strong>Factor vectors</strong>: First thing to note is that, to avoid overfitting, the factor vectors are currently just one dimensional (though they plan to increase the dimensions when they have more data). In practice, across all notes, this results in a spectrum where a negative factor roughly corresponds to the political left, and a positive factor corresponds to the political right (note that this spectrum was not hardcoded, but rather found automatically by the algorithm). This leaves a lot to be desired. In particular, because <strong>“consensus between the left and right” is used as a proxy for high-quality information</strong>, which might be good in some cases, but probably not for many others.<sup><a id="footnote-ref-c2f2dysibw" href="#footnote-c2f2dysibw" data-footnote-ref aria-describedby="footnote-label">5</a></sup> There are also plans to use multiple ranking models for different groups, though this seems mostly to be about dealing with geographic and linguistic diversity.<sup><a id="footnote-ref-78m4twa2vsl" href="#footnote-78m4twa2vsl" data-footnote-ref aria-describedby="footnote-label">6</a></sup> </p>
+<p><strong>Modeling uncertainty</strong>: Another detail is that they actually run gradient descent multiple times, including extra extreme ratings from “pseudo-raters” in each run. This forms a distribution of helpfulness scores, and in the spirit of risk-aversion, they use the lower-bound value of $i_n$ to classify a note as “helpful,” and an upper bound value of $i_n$ to classify it as “not helpful.”<sup><a id="footnote-ref-pyyuakpea3l" href="#footnote-pyyuakpea3l" data-footnote-ref aria-describedby="footnote-label">7</a></sup> </p>
+<p><strong>User helpfulness</strong>: This is the weirdest part in my opinion. They actually estimate the model parameters in two separate rounds. After the first round, the algorithm computes a “user helpfulness” score for each user based on how well their own ratings predicted the final rating assigned by the algorithm. Users which do a poor job of predicting the group decision are labeled as unhelpful, and are filtered out for the second round, which will give the final verdict on all the notes.<sup><a id="footnote-ref-qzwpuog8b0a" href="#footnote-qzwpuog8b0a" data-footnote-ref aria-describedby="footnote-label">8</a></sup> I don’t know how strict filtering is in practice, but from <a href="https://communitynotes.twitter.com/guide/en/under-the-hood/contributor-scores">the docs</a> it seems that at least two thirds of their ratings need to match the group consensus in order to be counted in the second round. This is also the key to “rating impact,” which unlocks the ability to write your own notes, where you get permission only once you have correctly predicted at least 5 note outcomes.</p>
 <p><img src="https://lh7-us.googleusercontent.com/_AxlQMH2mXkp-crIjpSOhoxiVredN8JfOKfXwzfEqr06DyhwecVgX42AdWMPKxyTwDzQ_Kq0OnHlcMr2Gzd-9s6FmE6ILkJUfUffnKBkWQfo6LmOjqu6bP19I5m5mblqT0qVdS19-GBS38V7YRFvX4M" alt=""></p>
 <p>This seems to be asking users to do two contradictory things: 1) Rate notes honestly according to their own beliefs and 2) use their ratings to predict what other people believe. There is also a “writer impact” system, where writers need to maintain a positive ratio of “helpful” to “not helpful” notes, or else they are rate-limited. </p>
 <p><strong>Tag-consensus harassment-abuse note score</strong>: In addition to rating a note as helpful or unhelpful, users are invited to tag a note with something like 20 different predefined descriptors. If there is a cross-partisan consensus (using the same core algorithm described above, but with different labels) that a note is harassment or abuse (this is a single tag), then the algorithm strongly punishes all users who rated this note as helpful by significantly lowering their “user helpfulness” score. The threshold for a note being deemed harassment or abuse is quite high, so I expect that this is fairly rare. I do wonder about how well a coordinated attack could pull off using this mechanism to bully people away from certain topics, and whether there exist any additional mechanisms to prevent this behavior. </p>
-<p><strong>Tag outlier filtering</strong>: There are roughly ten negative tags. If enough users[^414l34tq4mi] agree on the same negative tag, then the helpfulness threshold for the note rises from 0.4 to 0.5. I’m not sure how easy this is to game, but I could imagine a coordinated attack where could possibly be used to increase this threshold. </p>
+<p><strong>Tag outlier filtering</strong>: There are roughly ten negative tags. If enough users<sup><a id="footnote-ref-414l34tq4mi" href="#footnote-414l34tq4mi" data-footnote-ref aria-describedby="footnote-label">9</a></sup> agree on the same negative tag, then the helpfulness threshold for the note rises from 0.4 to 0.5. I’m not sure how easy this is to game, but I could imagine a coordinated attack where could possibly be used to increase this threshold. </p>
 <p><strong>A note on strategic ratings</strong>: Because of the general risk-averse design, it seems generally hard for individual users to get any one note to be certified as helpful, but pretty easy for motivated users to prevent a note from getting above the helpfulness threshold. However, I have read <a href="https://www.wired.com/story/x-community-notes-disinformation/">an anecdote</a> by one group of <a href="https://nafo-ofan.org/">Ukrainian activists</a> who coordinate to get specific notes labeled helpful, also claiming that Russian opponents use similar coordination tactics to get community notes taken down. This might also be because most posts don’t have any notes, and so it could be pretty easy for a small group to form a consensus (notes need at least 5 ratings to be eligible for “helpful” status). The Community Notes algorithm and all of the Community Notes data is open source, so this should make it fairly easy to notice these kinds of coordinated actions if they become widespread (though unclear if there is any system to act in response to manipulation). </p>
 <p><strong>A comment on jokes as misinformation</strong>: One concern I have is that a lot of X content isn’t making specific claims that can really be fact-checked. Take this example:</p>
 <p><img src="https://lh7-us.googleusercontent.com/y89V3NMi8Oa7KpgkpwWGW7GQKKJFYa2OUsWUlR4BmEeDbQOpZbfaLj8Jk0ImSW5nIko5qZUBj53EsZXYrDI79qor2Jv9hrb2YC05lTlpcUgaKnJB9dCR0EfDjj-iBRtRYCmzxy2xpp1x-W7XyLCCAtU" alt=""></p>
-<p>While it seems like a win against misinformation, Musk still gets to hide behind the shield of “joke meme,” further implying that while the actual empirical claims made by the meme are false, the underlying message is still true. Correcting jokes doesn’t seem to be in the scope of Community Notes, and furthermore, political humor often carries a deeper message that is practically impossible to fact-check (and it would be a bit much to require every political meme to be tied to a falsifiable claim).[^d4h8bwlnhq]</p>
+<p>While it seems like a win against misinformation, Musk still gets to hide behind the shield of “joke meme,” further implying that while the actual empirical claims made by the meme are false, the underlying message is still true. Correcting jokes doesn’t seem to be in the scope of Community Notes, and furthermore, political humor often carries a deeper message that is practically impossible to fact-check (and it would be a bit much to require every political meme to be tied to a falsifiable claim).<sup><a id="footnote-ref-d4h8bwlnhq" href="#footnote-d4h8bwlnhq" data-footnote-ref aria-describedby="footnote-label">10</a></sup></p>
 <h1>Academic commentary</h1>
 <p>I found two major peer-reviewed papers commenting on Community Notes/Birdwatch:</p>
-<p>&quot;<a href="https://dl.acm.org/doi/abs/10.1145/3491102.3502040">Birds of a Feather Don’t Fact-Check Each Other</a>&quot;[^lsfywmzlr1f] by Jennifer Allen, Cameron Martel, and David Rand</p>
-<p>This paper analyzes Birdwatch data from 2021 and seems to primarily find that most users of the platform are extremely partisan when giving ratings, and imply they are likely more partisan than the average X/Twitter user (also being more active, with an average post count &gt;22,000).[^coaqlqpt06h] They also find that, while all users were most likely to submit notes for content that aligned with their partisanship, right-wing users were much more likely to submit notes for left-wing posts/tweets than the reverse, raising concerns that attempts to reward users for agreeing with the consensus might favor left-wing users. Finally they also raise concerns that “partisan dunking” might lead people on the platform to become more partisan rather than less (citing a <a href="https://dl.acm.org/doi/pdf/10.1145/3411764.3445642">study</a> that empirically tests this).  
+<p>&quot;<a href="https://dl.acm.org/doi/abs/10.1145/3491102.3502040">Birds of a Feather Don’t Fact-Check Each Other</a>&quot;<sup><a id="footnote-ref-lsfywmzlr1f" href="#footnote-lsfywmzlr1f" data-footnote-ref aria-describedby="footnote-label">11</a></sup> by Jennifer Allen, Cameron Martel, and David Rand</p>
+<p>This paper analyzes Birdwatch data from 2021 and seems to primarily find that most users of the platform are extremely partisan when giving ratings, and imply they are likely more partisan than the average X/Twitter user (also being more active, with an average post count &gt;22,000).<sup><a id="footnote-ref-coaqlqpt06h" href="#footnote-coaqlqpt06h" data-footnote-ref aria-describedby="footnote-label">12</a></sup> They also find that, while all users were most likely to submit notes for content that aligned with their partisanship, right-wing users were much more likely to submit notes for left-wing posts/tweets than the reverse, raising concerns that attempts to reward users for agreeing with the consensus might favor left-wing users. Finally they also raise concerns that “partisan dunking” might lead people on the platform to become more partisan rather than less (citing a <a href="https://dl.acm.org/doi/pdf/10.1145/3411764.3445642">study</a> that empirically tests this).  
  </p>
 <p><a href="https://ojs.aaai.org/index.php/ICWSM/article/view/19335">Community-Based Fact-Checking on Twitter’s Birdwatch Platform</a> by Nicolas Pröllochs</p>
 <p>Similarly, the author analyzes a bunch of Birdwatch data from 2021. They find that the more socially influential a poster is (gauged by the number of followers), the less likely notes on that post are certified “helpful,” as raters tend to become much more divided. They also found, unsurprisingly, that notes which cited sources were more likely to be rated as helpful. Users of Birdwatch were prompted with a checklist of reasons whenever they labeled a note as helpful or unhelpful, and the paper analyzes this data (though doesn’t find anything particularly surprising). They also give a top ten Twitter users ranked by the fraction of tweets with a note tagging their tweet as “misleading,” and find that they are nearly all American politicians, confirming the idea that most Birdwatch users are using the platform to fact-check political content. </p>
 <h1>Conclusion</h1>
 <p>I probably left a lot out, but hopefully that’s a useful overview (if I made any mistakes, please let me know!). Personally, I was most disappointed during this exploration to learn that Community Notes functions primarily to bridge a binary left-right divide, and I would really love to see a version of this algorithm which was less binary, and more politics agnostic. Furthermore, I was also a bit overwhelmed by the complexity of this algorithm, and I share the sentiment brought up in the Vitalik Buterin commentary that it would be nice to see a version of this algorithm which was mathematically cleaner. I also feel like the mixture of rating and prediction into the same action seems murky, and it might be better for users to rate and predict separately.</p>
-<p>[^7v168kvc2y3]:  Particularly in the context of Elon Musk (Owner of X/Twitter) firing most of the existing content moderators. </p>
-<p>[^rdjw127zfdp]:  This philosophy of risk aversion appears frequently in many of their design decisions. </p>
-<p>[^5xykapxkjpu]:  To be considered helpful, a note also needs to have a factor vector (abs(f_n) &lt; 0.5) (as a final check against polarization).  </p>
-<p>[^t1y2rb8jkha]:  Full disclosure, sometimes they use a threshold of -0.04 and sometimes a threshold of (-0.05 - 0.8*abs(f_n)), and I don’t totally understand when or why. </p>
-<p>[^c2f2dysibw]:  Though I suppose plausibly the worst disinformation on X at the moment might be mostly political claims. </p>
-<p>[^78m4twa2vsl]:  I originally thought this incentivizes people to strategically rate comments in a way that makes them appear more neutral, but it seems a bit unclear. If a user has a strong partisan lean, they actually maximize the weight of those ratings which are opposite of what their ideology would predict, which makes the incentive landscape a bit more complicated.  </p>
-<p>[^pyyuakpea3l]: While the docs explicitly mention using the upper bound for certifying &quot;not helpful&quot; notes, I only saw mention of using the lower bound for certifying &quot;helpful&quot; from the Buterin summary. I think this is probably correct, but I&#39;m not totally sure. </p>
-<p>[^qzwpuog8b0a]:  They do add a safeguard to prevent users from directly copying the group decision by only counting ratings which happened before the group rating is published (48 hours after a note is submitted). </p>
-<p>[^414l34tq4mi]:  Users are weighted by a complicated function which punishes strong ideological disagreement with the note.  </p>
-<p>[^d4h8bwlnhq]:  While memes do convey important information not easily shared via specific and concrete claims, it does make discussing their “accuracy” really messy and hard to do (e.g. from the LW community: this commentary on a Shoggoth meme by @TurnTrout ). </p>
-<p>[^lsfywmzlr1f]:  Academics clearly can never resist a pun, even if it’s a pun on another pun.  </p>
-<p>[^coaqlqpt06h]:  They also speculate that partisanship might be a key motivator for becoming a Birdwatch contributor.</p>
+<section class="footnotes" data-footnotes>
+<h2 id="footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="footnote-7v168kvc2y3">
+<p> Particularly in the context of Elon Musk (Owner of X/Twitter) firing most of the existing content moderators.  <a href="#footnote-ref-7v168kvc2y3" data-footnote-backref aria-label="Back to reference 7v168kvc2y3">↩</a></p>
+</li>
+<li id="footnote-rdjw127zfdp">
+<p> This philosophy of risk aversion appears frequently in many of their design decisions.  <a href="#footnote-ref-rdjw127zfdp" data-footnote-backref aria-label="Back to reference rdjw127zfdp">↩</a></p>
+</li>
+<li id="footnote-5xykapxkjpu">
+<p> To be considered helpful, a note also needs to have a factor vector $abs(f_n) &lt; 0.5$ (as a final check against polarization).   <a href="#footnote-ref-5xykapxkjpu" data-footnote-backref aria-label="Back to reference 5xykapxkjpu">↩</a></p>
+</li>
+<li id="footnote-t1y2rb8jkha">
+<p> Full disclosure, sometimes they use a threshold of -0.04 and sometimes a threshold of $-0.05 - 0.8*abs(f_n)$, and I don’t totally understand when or why.  <a href="#footnote-ref-t1y2rb8jkha" data-footnote-backref aria-label="Back to reference t1y2rb8jkha">↩</a></p>
+</li>
+<li id="footnote-c2f2dysibw">
+<p> Though I suppose plausibly the worst disinformation on X at the moment might be mostly political claims.  <a href="#footnote-ref-c2f2dysibw" data-footnote-backref aria-label="Back to reference c2f2dysibw">↩</a></p>
+</li>
+<li id="footnote-78m4twa2vsl">
+<p> I originally thought this incentivizes people to strategically rate comments in a way that makes them appear more neutral, but it seems a bit unclear. If a user has a strong partisan lean, they actually maximize the weight of those ratings which are opposite of what their ideology would predict, which makes the incentive landscape a bit more complicated.   <a href="#footnote-ref-78m4twa2vsl" data-footnote-backref aria-label="Back to reference 78m4twa2vsl">↩</a></p>
+</li>
+<li id="footnote-pyyuakpea3l">
+<p>While the docs explicitly mention using the upper bound for certifying &quot;not helpful&quot; notes, I only saw mention of using the lower bound for certifying &quot;helpful&quot; from the Buterin summary. I think this is probably correct, but I&#39;m not totally sure.  <a href="#footnote-ref-pyyuakpea3l" data-footnote-backref aria-label="Back to reference pyyuakpea3l">↩</a></p>
+</li>
+<li id="footnote-qzwpuog8b0a">
+<p> They do add a safeguard to prevent users from directly copying the group decision by only counting ratings which happened before the group rating is published (48 hours after a note is submitted).  <a href="#footnote-ref-qzwpuog8b0a" data-footnote-backref aria-label="Back to reference qzwpuog8b0a">↩</a></p>
+</li>
+<li id="footnote-414l34tq4mi">
+<p> Users are weighted by a complicated function which punishes strong ideological disagreement with the note.   <a href="#footnote-ref-414l34tq4mi" data-footnote-backref aria-label="Back to reference 414l34tq4mi">↩</a></p>
+</li>
+<li id="footnote-d4h8bwlnhq">
+<p> While memes do convey important information not easily shared via specific and concrete claims, it does make discussing their “accuracy” really messy and hard to do (e.g. from the LW community: this <a href="https://www.lesswrong.com/posts/dqSwccGTWyBgxrR58/turntrout-s-shortform-feed?commentId=XHktatQRYpsfritrA">commentary</a> on a Shoggoth meme by <a href="https://www.lesswrong.com/users/turntrout?mention=user">@TurnTrout</a> ).  <a href="#footnote-ref-d4h8bwlnhq" data-footnote-backref aria-label="Back to reference d4h8bwlnhq">↩</a></p>
+</li>
+<li id="footnote-lsfywmzlr1f">
+<p> Academics clearly can never resist a pun, even if it’s a pun on another pun.   <a href="#footnote-ref-lsfywmzlr1f" data-footnote-backref aria-label="Back to reference lsfywmzlr1f">↩</a></p>
+</li>
+<li id="footnote-coaqlqpt06h">
+<p> They also speculate that partisanship might be a key motivator for becoming a Birdwatch contributor. <a href="#footnote-ref-coaqlqpt06h" data-footnote-backref aria-label="Back to reference coaqlqpt06h">↩</a></p>
+</li>
+</ol>
+</section>
 
     </article>
     <hr>
     <footer-component></footer-component>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$", right: "$", display: false},
+          {left: "$$", right: "$$", display: true}
+        ]
+      });
+    });
+  </script>
 </body>
 </html>

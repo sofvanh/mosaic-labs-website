@@ -40,14 +40,93 @@
     </header>
     <article>
       <h1>Pantheon Interface</h1>
-      <div class="post-author">Nicholas Kees Dupuis</div>
+      <div class="post-author">Nicholas Kees Dupuis & Sofia Vanhanen</div>
       <div class="post-metadata">
         <time datetime="2024-07-08">July 7, 2024</time>
       </div>
       <p>Pantheon is an <strong>experimental LLM interface</strong> exploring a different type of human-AI interaction. We created this as a part of the <a href="https://www.lesswrong.com/posts/bxt7uCiHam4QXrQAA/cyborgism">cyborgism</a> project, with the abstract motivation of augmenting the human ability to think by integrating human and AI generated thoughts.</p>
 <p>How it works:</p>
 <ol>
+<li>A human user “thinks out loud” by typing out their thoughts one at a time. This leaves a text trace of their stream of thought.Pantheon is an <strong>experimental LLM interface</strong> exploring a different type of human-AI interaction. We created this as a part of the <a href="https://www.lesswrong.com/posts/bxt7uCiHam4QXrQAA/cyborgism">cyborgism</a> project, with the abstract motivation of augmenting the human ability to think by integrating human and AI generated thoughts.</li>
+</ol>
+<p>How it works:</p>
+<ol>
 <li>A human user “thinks out loud” by typing out their thoughts one at a time. This leaves a text trace of their stream of thought.</li>
+<li>AI characters (called daemons) read this trace, and interact with the user by responding asynchronously with comments and questions.</li>
+</ol>
+<p>The core distinguishing philosophy is that, while most apps are about a human prompting an AI to do useful mental work, Pantheon is the opposite. Here, AI does the prompting, and the goal is for the AI generated questions or comments <strong>to cause the human user to think in ways they would not have on their own</strong>. At worst, the app is a <a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">rubber duck</a>. At best, the app is a court of advisors, each using their own unique skills to push you to think your best thoughts.</p>
+<p>Pantheon can be found at <a href="http://pantheon.chat">pantheon.chat</a>, and we would really appreciate any and all feedback you have.</p>
+<p>The app is set up for you to customize your own daemons. We have set up some default daemons to provide inspiration, but we expect the tool to be a lot more useful when they are customized to specific users. If the default daemons don’t feel useful, we highly encourage you to try to make your own.</p>
+<h1>How do I use Pantheon?</h1>
+<p>First, go to settings and provide an OpenAI API key.<sup><a id="footnote-ref-zdhw7eexea9" href="#footnote-zdhw7eexea9" data-footnote-ref aria-describedby="footnote-label">1</a></sup></p>
+<p>Next, begin typing out your thoughts on some topic. It helps to keep each thought relatively short, sending them to the stream of thought as often as you can. This gives the daemons lots of opportunities to interject and offer their comments. Furthermore, it’s usually best to <strong>treat this more like a diary or personal notes, rather than as a conversation</strong>. In this spirit, it’s better not to wait for them to respond, but to instead continue your train of thought, keeping your focus on your own writing.</p>
+<h2>What do the daemons see?</h2>
+<p>Your stream of thought appears in the interface as a chain of individual thoughts. Daemons are called to respond to specific thoughts. When they do, they are given access to all preceding thoughts in the chain, up to and including the thought they were called to. <strong>Daemons can only see text the user has written</strong>, and they can’t see any of the comments made by themselves or other daemons. We are looking into ways to give the daemons access to their own comment history, but we have not yet made this possible.</p>
+<p>After a daemon generates a comment, <strong>you can inspect the full chain of thought by clicking on that comment</strong>. This will open up a window which will show you everything the LLM saw in the process of generating that response. You can also edit the daemons in settings, as well as toggle them on or off.</p>
+<h2>Trees, branching, and sections</h2>
+<p>The text in the interface appears to you as a chain of thoughts, but it is actually a tree. If you hover over a thought, a plus icon will appear. If you click this icon, you can branch the chain. This is often useful if you feel that you have gone down a dead end, or would like to explore a tangent. When there are multiple branches, arrows will appear next to their parent thought, and you can use those arrows to navigate the tree.</p>
+<p>If you would like a fresh context, you can make an entirely new tree by opening the “Collection view” in the top left. Furthermore, you can also create a new “section” by clicking the “New Section” button below the input box. This will create a hard section break such that daemons can no longer see any context which came before the break.</p>
+<h2>How do I save my progress?</h2>
+<p>Everything you do is automatically saved in local storage. You can also import/export the full app state in settings.</p>
+<h2>What are “AI Suggestions”?</h2>
+<p>These are continuations of your stream of thought generated by the base mode. You can understand them as the base model predicting what you will write next.</p>
+<h2>What is “Ask AI”?</h2>
+<p>In order to avoid you ever having to copy and paste your stream of thought into another chat bot interface, the button “Ask AI” will turn the text you are currently writing into an instruction for a chat model, and all of your past thoughts will be given to it for context. You can use it to, for example:</p>
+<ul>
+<li>Summarize everything so far</li>
+<li>Answer a specific question</li>
+<li>Brainstorm a list of ideas</li>
+<li>Rephrase something you said</li>
+</ul>
+<p>These instructions and the model’s responses are “meta” in that they will not be shown to the daemons, or be used to generate base model completions (as such they also appear differently in the interface).</p>
+<h2>Can I control which daemon responds?</h2>
+<p>Yes, there is a mentions feature. By default, daemons are selected at random, but if you type @ and then the daemon&#39;s name, this will ensure that specific daemon will respond to your thought.</p>
+<h1>What is the target use case?</h1>
+<p>We built this as an experimental interface, and our goal from the beginning was just to explore new ways of interacting with LLMs. Therefore, <strong>we didn’t have a target use case in mind</strong>. That said, some examples for how we’ve personally used it include:</p>
+<ul>
+<li>Brainstorming ideas for a project</li>
+<li>Thinking through a personal problem</li>
+<li>Brain dumping after listening to a presentation</li>
+<li>Journaling</li>
+<li>Explaining a topic while learning about it</li>
+<li>Keeping a work log</li>
+</ul>
+<p>We’ve especially found it useful for both overcoming the paralysis of an empty page, and maintaining the momentum to continue pursuing a train of thought.</p>
+<h1>How do I make my own daemons?</h1>
+<p>When you go to settings, you will find the option to edit existing daemons, or to create your own. A daemon consists of two things:</p>
+<ol>
+<li>a system prompt</li>
+<li>a list of chain of thought prompts</li>
+</ol>
+<p>The list of chain of thought prompts outline half of a chatbot conversation. Each prompt is shown to the chat model one at a time, and the chat model will generate a response to each. The response to the final prompt is shown to the user as a comment.</p>
+<p><img src="https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/b7d1cffa407cc596c5dbbbd68bcf45c43d531f56458168b737bb74ebf7c35478/qdaumsovsvyab7btkba8" alt=""></p>
+<p>In this pipeline, a daemon doesn’t see the user’s thoughts by default. The user’s thoughts have to be included explicitly by inserting variables into the prompts. These variables will be replaced by the user’s thoughts at the time the daemon is called. There are currently two variables:</p>
+<ul>
+<li><strong>{PAST}</strong> : Contains all past thoughts in the current branch up to but not including the thought which the daemon was called to respond to.</li>
+<li><strong>{CURRENT}</strong> : Only contains the thought which the daemon was called to respond to.</li>
+</ul>
+<p>Below is an example of how these variables could be used:</p>
+<p><img src="https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/JHsfMWtwxBGGTmb8A/hsaqrvwkbejocwknyqdh" alt=""></p>
+<p>A daemon may have arbitrarily many chain of thought prompts, though the longer the chain of thought gets, the longer it will take to generate a response (each chat model response requires a separate API request).</p>
+<p>The formula we used for the default daemons is a variant of <a href="https://www.lesswrong.com/tag/babble-and-prune">babble and prune</a>. The first prompt gets the model to generate a long list of possible responses, and later prompts are used to narrow down which response is best. This isn’t necessarily the best way to do this, and we would encourage anyone making their own daemons to experiment with alternative formulas.</p>
+<h1>How does this relate to Loom?</h1>
+<p>In general, <a href="https://generative.ink/posts/loom-interface-to-the-multiverse/">Loom</a> is what we think of as an “LLM-centered” interface, where the <strong>burden of adapting to the constraints of the interaction falls primarily on the human user</strong>. Loom users will typically minimize the extent to which they directly intervene on LLMs in order to avoid contaminating their “<a href="https://www.lesswrong.com/posts/suSpo6JQqikDYCskw/studying-the-alien-mind-1">natural behavior</a>”, and to make it possible to observe them thinking in a wide range of contexts which are often much less intuitive to most people by default.</p>
+<p>In this frame, Pantheon is explicitly a “human-centered” interface, where the <strong>burden on the human user is minimized at the expense of making LLMs adapt</strong> to the unnatural context of having to comment on a human’s stream of thought. The intention is to ensure that, during a session, the human user does not have to spend any additional mental energy managing their relationship to the LLM, or adjusting their behavior to match the LLM’s expectations.</p>
+<h1>Does Pantheon use base models?</h1>
+<p>Yes, but in a much less significant way than we originally intended.</p>
+<p>We spent a lot of time creating prompts for base model simulacra which had interesting/useful personalities, and found some prompts which worked fairly well. Base models, however, are extremely sensitive to changes in tone, style, or really anything that departs from the expectations set in the prompt. When these simulacra came into contact with the user’s text, which looked nothing like the prompt, they would always collapse into chaotic nonsense. It was also quite hard to find contexts where it made sense for a character to be responding to user text at all.</p>
+<p>We do use a base model to predict the user’s next thought, and those predictions are continuously shown to the user as they write. These predictions are sometimes interesting, but this is far from the best way to use base models. Some ideas for how they might be used in the future:</p>
+<ul>
+<li><strong>Dynamic prompting/sampling</strong>: One idea would be to use LLMs to dynamically construct a prompt which more naturally integrates the user’s text into a base model prompt to avoid breaking the flow of a story. Furthermore, we might be able to use <a href="https://www.lesswrong.com/posts/4Hnso8NMAeeYs8Cta/revealing-intentionality-in-language-models-through-adavae">alternate sampling methods</a> to help steer base models in such a way that they accept difficult to prompt premises (see janus’s <a href="https://www.lesswrong.com/posts/4Hnso8NMAeeYs8Cta/revealing-intentionality-in-language-models-through-adavae?commentId=bYcTxPRMKNbNpLnyg">comment</a> on diegetic interfaces).</li>
+<li><strong>Hybrid daemons</strong>: Another idea we experimented with a little was to create daemons which used both a chat model and a base model to generate parts of their chain of thought. In this way, we might be able to use base models to “inject creativity” into chat models, and help them overcome <a href="https://www.lesswrong.com/posts/t9svvNPNmFf5Qa3TA/mysteries-of-mode-collapse">mode collapse</a>.</li>
+</ul>
+<h1>Is Pantheon open source?</h1>
+<p>Yes! Pantheon is open source and licensed under GNU General Public License version 3 (GPLv3). We considered the possible harms of open sourcing the tool and expect them to be fairly minimal. If you would like to contribute to Pantheon, the code is hosted on <a href="https://github.com/nickkeesG/Pantheon">Github</a>.</p>
+<h1>Should I be concerned about data privacy?</h1>
+<p>The app does not have a backend, and so any and all data you share with the app will only be shared with the OpenAI servers, or be kept in your own local storage. Therefore, your worries about data privacy should be about the same as your concerns with using the ChatGPT interface. </p>
+<h1>Acknowledgments</h1>
+<p>Finally, we’d like to thank some of the people who helped make this project happen. Firstly, <a href="https://www.lesswrong.com/users/ethan-edwards?mention=user">@Ethan Edwards</a> , <a href="https://www.lesswrong.com/users/clem_acs?mention=user">@clem_acs</a> , Gianluca Pontonio, <a href="https://www.lesswrong.com/users/quentin-feuillade-montixi?mention=user">@Quentin FEUILLADE--MONTIXI</a> , <a href="https://www.lesswrong.com/users/filip-sondej?mention=user">@Filip Sondej</a> , and <a href="https://www.lesswrong.com/users/remember?mention=user">@remember</a> all gave really valuable help with brainstorming the initial design. We also got a lot of valuable user feedback from <a href="https://www.lesswrong.com/users/eggsyntax?mention=user">@eggsyntax</a>, <a href="https://www.lesswrong.com/users/clem_acs?mention=user">@clem_acs</a>, <a href="https://www.lesswrong.com/users/filip-sondej?mention=user">@Filip Sondej</a> , Dmitriy Kripkov, Akash Arora, Vinay Hiremath, and <a href="https://www.lesswrong.com/users/aay17ush?mention=user">@Aay17ush</a> . Aayush also helped a lot by providing a character generator we used to produce the default daemons.</p>
+<ol start="2">
 <li>AI characters (called daemons) read this trace, and interact with the user by responding asynchronously with comments and questions.</li>
 </ol>
 <p>The core distinguishing philosophy is that, while most apps are about a human prompting an AI to do useful mental work, Pantheon is the opposite. Here, AI does the prompting, and the goal is for the AI generated questions or comments <strong>to cause the human user to think in ways they would not have on their own</strong>. At worst, the app is a <a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">rubber duck</a>. At best, the app is a court of advisors, each using their own unique skills to push you to think your best thoughts.</p>
@@ -126,7 +205,7 @@
 <h2 id="footnote-label" class="sr-only">Footnotes</h2>
 <ol>
 <li id="footnote-zdhw7eexea9">
-<p>To get a working OpenAI key, log into your OpenAI account and go here: <a href="https://platform.openai.com/api-keys">https://platform.openai.com/api-keys</a> You do not need to have an OpenAI subscription, but using the key will cost money every time the app makes a request. Detailed pricing information can be found here: <a href="https://openai.com/api/pricing/">https://openai.com/api/pricing/</a> An extremely rough estimate is something like ~1USD / hour of continuous use, though this depends a lot on how quickly you type, and how long the chain of thought is for each daemon. <a href="#footnote-ref-zdhw7eexea9" data-footnote-backref aria-label="Back to reference zdhw7eexea9">↩</a></p>
+<p>To get a working OpenAI key, log into your OpenAI account and go here: <a href="https://platform.openai.com/api-keys">https://platform.openai.com/api-keys</a> You do not need to have an OpenAI subscription, but using the key will cost money every time the app makes a request. Detailed pricing information can be found here: <a href="https://openai.com/api/pricing/">https://openai.com/api/pricing/</a> An extremely rough estimate is something like ~1USD / hour of continuous use, though this depends a lot on how quickly you type, and how long the chain of thought is for each daemon. <a href="#footnote-ref-zdhw7eexea9" data-footnote-backref aria-label="Back to reference zdhw7eexea9">↩</a> <a href="#footnote-ref-zdhw7eexea9" data-footnote-backref aria-label="Back to reference zdhw7eexea9">↩<sup>2</sup></a></p>
 </li>
 </ol>
 </section>

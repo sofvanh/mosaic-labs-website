@@ -65,6 +65,7 @@ const template = (content, metadata) => `
     </article>
     <hr>
     <newsletter-component></newsletter-component>
+    <a href="/blog/">← Back to Blog</a>
     <hr>
     <footer-component></footer-component>
   </div>

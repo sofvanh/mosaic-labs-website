@@ -44,6 +44,7 @@ const template = (content, metadata) => `
 
   <script src="../components/gtag-component.js" defer></script>
   <script src="../components/footer-component.js" defer></script>
+  <script src="../components/newsletter-component.js" defer></script>
 </head>
 <body>
   <div class="content">
@@ -62,6 +63,8 @@ const template = (content, metadata) => `
       </div>
       ${content}
     </article>
+    <hr>
+    <newsletter-component></newsletter-component>
     <hr>
     <footer-component></footer-component>
   </div>
@@ -168,8 +171,8 @@ function updateIndexPage(posts) {
     const backLinkMatch = /<a href="[^"]*"><- Back to Home[^<]*<\/a>/i.exec(indexContent);
     const backLinkContent = backLinkMatch ? backLinkMatch[0] : '<a href="/">Back to Home</a>';
 
-    const footerMatch = /<hr>[\s\S]*?<footer-component><\/footer-component>/i.exec(indexContent);
-    const footerContent = footerMatch ? footerMatch[0] : '<hr><footer-component></footer-component>';
+    const footerMatch = /<footer-component><\/footer-component>/i.exec(indexContent);
+    const footerContent = footerMatch ? footerMatch[0] : '<footer-component></footer-component>';
 
     // Create the new HTML structure
     const newIndexContent = `<!DOCTYPE html>
@@ -183,6 +186,9 @@ ${headContent}
       <div id="posts-list">
         ${postListHTML}
       </div>
+      <hr>
+      <newsletter-component></newsletter-component>
+      <hr>
     </main>
     ${footerContent}
   </div>

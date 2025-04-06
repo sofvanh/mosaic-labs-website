@@ -1,4 +1,4 @@
-Home page of Mosaic Labs, our little R&D org.
+Home page of Mosaic Labs, our little R&D org. [mosaic-labs.org](https://mosaic-labs.org)
 
 `http-server` to run the page locally so that internal links will work.
 

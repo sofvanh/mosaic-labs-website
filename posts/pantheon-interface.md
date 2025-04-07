@@ -9,10 +9,6 @@ Pantheon is an **experimental LLM interface** exploring a different type of hum
 
 How it works:
 
-1.  A human user “thinks out loud” by typing out their thoughts one at a time. This leaves a text trace of their stream of thought.Pantheon is an **experimental LLM interface** exploring a different type of human-AI interaction. We created this as a part of the [cyborgism](https://www.lesswrong.com/posts/bxt7uCiHam4QXrQAA/cyborgism) project, with the abstract motivation of augmenting the human ability to think by integrating human and AI generated thoughts.
-
-How it works:
-
 1.  A human user “thinks out loud” by typing out their thoughts one at a time. This leaves a text trace of their stream of thought.
 2.  AI characters (called daemons) read this trace, and interact with the user by responding asynchronously with comments and questions.
 

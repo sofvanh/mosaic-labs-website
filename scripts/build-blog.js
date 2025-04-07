@@ -9,7 +9,7 @@ const postsDir = path.join(__dirname, '../posts');
 const blogDir = path.join(__dirname, '../blog');
 const existingIndexPath = path.join(blogDir, 'index.html');
 
-// Template for blog posts
+
 const template = (content, metadata) => `
 <!DOCTYPE html>
 <html>
@@ -48,23 +48,28 @@ const template = (content, metadata) => `
 </head>
 <body>
   <div class="content">
-    <header>
+    <header style="padding: 20px 0;">
       <a href="/blog/">← Back to Blog</a>
     </header>
     <article>
-      <h1>${metadata.title}</h1>
-      ${metadata.author ? `<div class="post-author">${metadata.author}</div>` : ''}
+      <h1 style="padding-top: 40px; padding-bottom: 40px;">${metadata.title}</h1>
       <div class="post-metadata">
-        <time datetime="${metadata.date}">${new Date(metadata.date).toLocaleDateString('en-US', {
+        ${metadata.author ? `<div class="post-author">by ${metadata.author}</div>` : ''}
+        <div>
+            <time datetime="${metadata.date}">${new Date(metadata.date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 })}</time>
+        </div>
+        <div>
+${metadata.lesswrong_url ? `<a href="${metadata.lesswrong_url}" target="_blank" rel="noopener noreferrer" style="margin: 10px 0; display: inline-block;">Read on LessWrong</a>` : ''}
+        </div>
       </div>
       ${content}
     </article>
-    <hr>
     <newsletter-component></newsletter-component>
+    <hr>
     <a href="/blog/">← Back to Blog</a>
     <hr>
     <footer-component></footer-component>
@@ -83,34 +88,29 @@ const template = (content, metadata) => `
 </html>
 `;
 
-// Generate HTML for the post list
 const generatePostListHTML = (posts) => {
   return posts.map(post => `
     <div class="post-item">
       <h2 class="post-title">
         <a href="/blog/${post.slug}">${post.title}</a>
       </h2>
-      <div class="post-metadata">
-        ${post.author ? `<div class="post-author">by ${post.author}</div>` : ''}
-        <div>
-          <time class="post-date" datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', {
+      <p class="post-preview-metadata">
+      <time class="post-date" datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   })}</time>
-        </div>
-      </div>
+      ${post.author ? ` • by ${post.author}` : ''}
+      </p>
       ${post.description ? `<p>${post.description}</p>` : ''}
     </div>
   `).join('');
 };
 
-// Make sure the blog directory exists
 if (!fs.existsSync(blogDir)) {
   fs.mkdirSync(blogDir, { recursive: true });
 }
 
-// Convert markdown files to HTML
 async function buildBlog() {
   const files = fs.readdirSync(postsDir).filter(file => file.endsWith('.md'));
   const allPosts = [];
@@ -118,64 +118,43 @@ async function buildBlog() {
   for (const file of files) {
     const filePath = path.join(postsDir, file);
     const fileContent = fs.readFileSync(filePath, 'utf-8');
-
-    // Parse frontmatter and content
     const { data, content } = matter(fileContent);
 
-    // Set default metadata if not provided
     const metadata = {
       title: data.title || file.replace('.md', ''),
       date: data.date || new Date().toISOString().split('T')[0],
       description: data.description || '',
       author: data.author || '',
-      slug: file.replace('.md', '')
+      slug: file.replace('.md', ''),
+      lesswrong_url: data.lesswrong_url || ''
     };
 
-    // Convert markdown to HTML
     const html = await marked(content);
     const outputPath = path.join(blogDir, `${metadata.slug}.html`);
-
-    // Save the post HTML
     fs.writeFileSync(outputPath, template(html, metadata));
     console.log(`Generated ${outputPath}`);
-
-    // Add to posts list for index page
     allPosts.push(metadata);
   }
 
-  // Sort posts by date (newest first)
   allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  // Update the index page
   updateIndexPage(allPosts);
 }
 
-// Function to update the index page while preserving existing styling
 function updateIndexPage(posts) {
-  // Check if index.html exists
   if (fs.existsSync(existingIndexPath)) {
     let indexContent = fs.readFileSync(existingIndexPath, 'utf-8');
-
-    // Generate the post list HTML
     const postListHTML = generatePostListHTML(posts);
 
-    // Create a completely new index.html based on the existing structure
-    // This is more reliable than trying to use regex to replace specific parts
-
-    // First, extract the parts we need to preserve
+    // Preserve some parts of the existing index.html
     const headMatch = /<head>[\s\S]*?<\/head>/i.exec(indexContent);
     const headContent = headMatch ? headMatch[0] : '<head><title>Mosaic Labs Blog</title></head>';
-
     const heroMatch = /<div class="hero[\s\S]*?<\/div>\s*<\/div>/i.exec(indexContent);
     const heroContent = heroMatch ? heroMatch[0] : '<div class="hero small"><div class="text-center"><h1 class="title">Mosaic Labs Blog</h1></div></div>';
-
     const backLinkMatch = /<a href="[^"]*"><- Back to Home[^<]*<\/a>/i.exec(indexContent);
     const backLinkContent = backLinkMatch ? backLinkMatch[0] : '<a href="/">Back to Home</a>';
-
     const footerMatch = /<footer-component><\/footer-component>/i.exec(indexContent);
     const footerContent = footerMatch ? footerMatch[0] : '<footer-component></footer-component>';
 
-    // Create the new HTML structure
     const newIndexContent = `<!DOCTYPE html>
 <html>
 ${headContent}

@@ -3,6 +3,7 @@ title: "Habermas Machine"
 date: "2025-03-12"
 author: "Nicholas Kees Dupuis"
 description: "Explanation of how DeepMind's AI mediator helps groups converge on shared beliefs."
+lesswrong_url: "https://www.lesswrong.com/posts/j9K4Wu9XgmYAY3ztL/habermas-machine"
 ---
 This post is a distillation of a recent work in AI-assisted human coordination from Google DeepMind.  
   

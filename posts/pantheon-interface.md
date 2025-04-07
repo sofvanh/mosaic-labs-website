@@ -3,6 +3,7 @@ title: "Pantheon Interface"
 date: "2024-07-08"
 author: "Nicholas Kees Dupuis & Sofia Vanhanen"
 description: "Announcement and walk-through of Pantheon, our new tool."
+lesswrong_url: "https://www.lesswrong.com/posts/JHsfMWtwxBGGTmb8A/pantheon-interface"
 ---
 Pantheon is an **experimental LLM interface** exploring a different type of human-AI interaction. We created this as a part of the [cyborgism](https://www.lesswrong.com/posts/bxt7uCiHam4QXrQAA/cyborgism) project, with the abstract motivation of augmenting the human ability to think by integrating human and AI generated thoughts.
 
